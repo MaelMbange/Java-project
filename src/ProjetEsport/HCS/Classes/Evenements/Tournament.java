@@ -163,6 +163,7 @@ public class Tournament {
             tournoi.AjouterEquipe("Great sharity", "We are Covenants !");
 
             //System.out.println("5");
+            System.out.println();
             tournoi.AjouterMembreEquipe("Wagner", "Requiem");
             tournoi.AjouterMembreEquipe("PTG_1", "Requiem");
             tournoi.AjouterMembreEquipe("PTG_2", "Requiem");
@@ -170,6 +171,7 @@ public class Tournament {
             tournoi.AjouterMembreEquipe("PTG_4", "Requiem");
             tournoi.AjouterMembreEquipe("PTG_5", "Requiem");
 
+            System.out.println();
             tournoi.AjouterMembreEquipe("Caprasse", "Meridian");
             tournoi.AjouterMembreEquipe("FUN_1", "Meridian");
             tournoi.AjouterMembreEquipe("FUN_2", "Meridian");
@@ -177,6 +179,7 @@ public class Tournament {
             tournoi.AjouterMembreEquipe("FUN_4", "Meridian");
             tournoi.AjouterMembreEquipe("FUN_5", "Meridian");
 
+            System.out.println();
             tournoi.AjouterMembreEquipe("Caprasse", "Great sharity");
             tournoi.AjouterMembreEquipe("FUN_1", "Great sharity");
             tournoi.AjouterMembreEquipe("FUN_2", "Great sharity");

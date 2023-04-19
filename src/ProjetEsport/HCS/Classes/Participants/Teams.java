@@ -55,7 +55,7 @@ public class Teams {
     }
     public void setTeamCoach(Coach c){
         this.TeamCoach = c;
-        System.out.println("Coach ajoute !");
+        System.out.printf("[%s] Coach  ajoute !\n",this.TeamName);
     }
     public String getTeamName() {
         return TeamName;
