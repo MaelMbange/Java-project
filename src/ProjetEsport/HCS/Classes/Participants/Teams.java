@@ -3,7 +3,7 @@ package ProjetEsport.HCS.Classes.Participants;
 import java.util.*;
 
 public class Teams {
-    private ArrayList<Players> TeamsMembers;
+    private ArrayList<Players> TeamsPlayers;
     private Coach TeamCoach;
     private String TeamName;
     private String Description;
@@ -14,17 +14,26 @@ public class Teams {
     // Creer une instance d'equipe
     public Teams(String Name){
         this.TeamName = Name;
-        TeamsMembers = new ArrayList<Players>(5);
+        TeamsPlayers = new ArrayList<Players>(5);
+        TeamCoach = null;
         Description = "You can add a description!";
-        TeamCoach = new Coach();
+    }
+
+    public Teams(String Name, String description){
+        this.TeamName = Name;
+        TeamsPlayers = new ArrayList<Players>(5);
+        TeamCoach = null;
+        if(description == null) Description = "";
+        else if(description.length() <= 200)
+            Description = description;
     }
 
     // Ajouter un joueur
     public void addPlayers(Players player) throws Exception {
-        if(TeamsMembers.size() < 5)
-            if(!TeamsMembers.contains(player)){
-                TeamsMembers.add(player);
-                System.out.println("Joueur ajoute !");
+        if(TeamsPlayers.size() < 5)
+            if(!TeamsPlayers.contains(player)){
+                TeamsPlayers.add(player);
+                System.out.printf("[%s] Joueur ajoute !\n",this.TeamName);
             }
             else throw new Exception("The player your trying to add is already in the team!");
         else throw new Exception("Max amount of players has already been reached!");
@@ -44,27 +53,40 @@ public class Teams {
             TeamName = teamName;
         else throw new Exception("TeamName is the same as before!");
     }
-
-    public void setTeamCoach(String nom, String prenom){
-        this.TeamCoach.setNom(nom);
-        this.TeamCoach.setPrenom(prenom);
+    public void setTeamCoach(Coach c){
+        this.TeamCoach = c;
+        System.out.println("Coach ajoute !");
     }
-
-
     public String getTeamName() {
         return TeamName;
     }
-
     public String getDescription() {
         return Description;
     }
-
     public int getCountPlayer(){
-        return TeamsMembers.size();
+        return TeamsPlayers.size();
     }
-
     public Coach getTeamCoach() {
         return TeamCoach;
+    }
+    public ArrayList<Players> getTeamsPlayers() {
+        return TeamsPlayers;
+    }
+    @Override
+    public String toString() {
+        String s = "\n=== Equipe ===\n[" + TeamName + "]\ndescription: \"" + Description + "\"\n\n";
+
+        s += "=== Coach ===\n";
+        if(TeamCoach != null)
+            s += TeamCoach + "\n";
+        else s+= "vide\n";
+
+        s += "=== Joueurs ===\n";
+        if(!TeamsPlayers.isEmpty())
+            s += TeamsPlayers + "\n";
+        else s+= "vide\n";
+
+        return s;
     }
 
     @Override
@@ -72,45 +94,35 @@ public class Teams {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Teams teams = (Teams) o;
-        return Objects.equals(TeamsMembers, teams.TeamsMembers) && Objects.equals(TeamName, teams.TeamName) && Objects.equals(Description, teams.Description);
+        return Objects.equals(TeamsPlayers, teams.TeamsPlayers) && Objects.equals(TeamName, teams.TeamName) && Objects.equals(Description, teams.Description);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(TeamsMembers, TeamCoach, TeamName, Description);
+        return Objects.hash(TeamsPlayers, TeamCoach, TeamName, Description);
     }
 
     public static void main(String[] argv){
         try{
-            Teams teams = new Teams("Quadrant");
-            teams.setDescription("We are a french team");
+            Teams teams = new Teams("Quadrant","We are a french team");
+            //teams.setDescription("We are a french team");
 
             Players[] players = new Players[]{
-                    Players.GetInstance().setPseudo("B").setNationality("Be").setRole(Players.Status.STARTER),
-                    Players.GetInstance().setPseudo("A").setNationality("Fr").setRole(Players.Status.STARTER),
-                    new Players("D",true).setNationality("Au"),
-                    new Players("C",true).setRegisterTime(19,Calendar.JULY,2019),
+                    new Players("PTG_1",true, "Be"),
+                    new Players("PGT_2",true, "Be"),
+                    new Players("PGT_3",true, "Be"),
+                    new Players("PGT_4",true, "Be")
             };
 
-            teams.TeamsMembers.addAll(List.of(players));
-            teams.TeamsMembers.sort(Players::compareTo);
+            teams.TeamsPlayers.addAll(List.of(players));
+            teams.TeamsPlayers.sort(Players::compareTo);
+
+            Coach c = new Coach("Wagner","Be");
+            teams.setTeamCoach(c);
 
             Locale Place = new Locale("En");
 
-            System.out.println();
-            System.out.println("Team name : " + teams.getTeamName());
-            System.out.println("Description : " + teams.getDescription());
-            System.out.println();
-            System.out.println("===============Membres==================");
-
-            for (Players p : teams.TeamsMembers) {
-                System.out.println();
-                System.out.println( "*\t" + p.s_getID() + " " + p.getPseudo() + " " + p.getNationality(Place));
-                System.out.println("\t" + p.getRegisterTime(Place));
-            }
-            System.out.println();
-
-            System.out.println("========================================");
+            System.out.println(teams);
         }
         catch(Exception e){
             System.out.println(e.getMessage());

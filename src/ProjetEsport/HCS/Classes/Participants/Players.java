@@ -4,28 +4,27 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class Players extends Members implements Comparable<Players>
+public class Players extends Members implements Comparable<Players>, Cloneable
 {
-    // Contient tout les identifiants des objets existants (des Joueurs existants)
-    //private static int CurrentId = 0;
-
-    //private int ID;
-    private String Pseudo;
-    private Calendar RegisterTime;
-    private Locale Nationality;
     private Status Role;
 
     private Players(){
         super();
-        this.RegisterTime = Calendar.getInstance();
     }
-    public Players(String Pseudo,boolean isStarter){
+    public Players(String Pseudo, boolean isStarter, String location){
         super();
-        //CurrentId++;
-        //this.ID = CurrentId;
         this.Pseudo = Pseudo;
-        this.Nationality = Locale.getDefault(); //new Locale("en",country);
-        this.RegisterTime = Calendar.getInstance();
+        this.setNationality(location);
+
+        if(isStarter)
+            this.Role = Status.STARTER;
+        else
+            this.Role = Status.SUBSTITUTE;
+    }
+    public Players(int Id, String Pseudo,boolean isStarter, String location){
+        super(Id);
+        this.Pseudo = Pseudo;
+        this.setNationality(location);
 
         if(isStarter)
             this.Role = Status.STARTER;
@@ -33,69 +32,29 @@ public class Players extends Members implements Comparable<Players>
             this.Role = Status.SUBSTITUTE;
     }
 
-    /*************************************************/
-    /* Permet de récupérer une instance de la classe */
-    /*************************************************/
-    public static Players GetInstance(){
-        return new Players();
-    }
-
     /****************************** Get Members Function ************************************/
-    public int getID() {
-        return ID;
-    }
-    public String s_getID(){
-        return String.format("%04d",ID);
-    }
-    public String getPseudo() {
-        return Pseudo;
-    }
-    public String getRegisterTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("d MMMM, yyyy");
-        return sdf.format(RegisterTime.getTime());
-    }
-
-    // Permet de récupérer les informations sous un certain format d'ecriture
-    public String getRegisterTime(Locale selectedLocation) {
-        SimpleDateFormat sdf = new SimpleDateFormat("d MMMM, yyyy",selectedLocation);
-        return sdf.format(RegisterTime.getTime());
-    }
-    public String getNationality(Locale selectedLocation) {
-        return Nationality.getDisplayCountry(selectedLocation);
-    }
-
-    public String getNationality() {
-        return Nationality.getDisplayCountry();
-    }
     public Status getRole() {
         return Role;
     }
+
     /****************************************************************************************/
+
+
 
     /****************************** Set Members Function ************************************/
 
-    private Players setId(int id){
-        this.ID = id;
-        return this;
-    }
-    public Players setPseudo(String pseudo) {
-        Pseudo = pseudo;
-        return this;
-    }
-    public Players setRegisterTime(int Day, int Month, int Year) {
-        this.RegisterTime.clear();
-        RegisterTime.set(Year,Month,Day);
-        return this;
-    }
-    public Players setNationality(String CountryCode) {
-        Nationality = new Locale("en",CountryCode);
-        return this;
-    }
     public Players setRole(Status role) {
         Role = role;
         return this;
     }
+
+    private Players setRegisterTime(int Day, int Month, int Year) {
+        this.RegisterTime.clear();
+        RegisterTime.set(Year,Month,Day);
+        return this;
+    }
     /***************************************************************************************/
+
 
     @Override
     public int compareTo(Players o) {
@@ -103,21 +62,30 @@ public class Players extends Members implements Comparable<Players>
     }
 
     @Override
+    public String toString() {
+        return String.format("*\t%04d [%-10s] %-20s - %s [%s]\n",this.getID(), this.getPseudo(), this.getNationality(), this.getRegisterTime(), (this.getRole() == Status.STARTER)? "STARTER" : "SUBSTITUTE");
+    }
+    @Override
+    public Players clone() {
+        try
+        {
+            return (Players) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Players players = (Players) o;
-        return ID == players.ID && Objects.equals(Pseudo, players.Pseudo) && Objects.equals(RegisterTime, players.RegisterTime) && Objects.equals(Nationality, players.Nationality) && Role == players.Role;
+        return Role == players.Role;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), Pseudo, RegisterTime, Nationality, Role);
-    }
-
-    @Override
-    public String toString() {
-        return "*\t" + this.s_getID() + " " + this.getPseudo() + " " + this.getNationality() + "\n\t" + this.getRegisterTime();
+        return Objects.hash(super.hashCode(), Role);
     }
 
     public enum Status{
@@ -127,8 +95,9 @@ public class Players extends Members implements Comparable<Players>
 
 
     public static void main(String argv[]){
-        Players p = Players.GetInstance().setPseudo("Curim").setNationality("Be").setRole(Status.STARTER);//.setRegisterTime(3,4,2023).setId(1);
-        Players q = Players.GetInstance().setPseudo("Ice").setNationality("Fr").setRole(Status.STARTER);//.setRegisterTime(3,4,2023).setId(1);
+        Players p = new Players("PTG",true,"Be");
+
+        Players q = p.clone();
 
         System.out.println(p);
         System.out.println(q);
@@ -146,8 +115,6 @@ public class Players extends Members implements Comparable<Players>
             System.out.println("Sont egaux");
         else
             System.out.println("ne sont pas egaux");
-
-
     }
 
 }

@@ -52,13 +52,13 @@ public class Matches {
         B = b;
     }
 
-    public void SetRoundResult(RoundWonBy result) {
+    public void setRoundResult(RoundWonBy result) {
         if(!StateOfMatch) return;
 
         if(ScoreA < RoundNumber/2+1 || ScoreB < RoundNumber/2+1){
-            if(result == RoundWonBy.Team1)
+            if(result == RoundWonBy.TeamA)
                 ScoreA++;
-            else if(result == RoundWonBy.Team2)
+            else if(result == RoundWonBy.TeamB)
                 ScoreB++;
         }
         if(ScoreA >= RoundNumber/2+1 || ScoreB >= RoundNumber/2+1){
@@ -66,13 +66,27 @@ public class Matches {
         }
     }
 
-    public void setRoundNumber(int roundNumber) {
-        RoundNumber = roundNumber;
+    public void setRoundNumber(int roundNumber) throws Exception {
+        if(roundNumber <= 5)
+            RoundNumber = roundNumber;
+        else throw new Exception("Le nombre de round ne peut etre superieur a 5");
+    }
+
+    public String ResultToString(){
+        return String.format(" [%s] Vs [%s]\n",this.A.getTeamName(), this.B.getTeamName()) + String.format("  %10d - %d\n", this.ScoreA, this.ScoreB);
+    }
+
+    public String PlayerTableToString(){
+        String s = "";
+        for(int i = 0; i < 5; i++){
+            s += String.format("| %-10s | %10s |\n",this.A.getTeamsPlayers().get(i).getPseudo(),this.B.getTeamsPlayers().get(i).getPseudo() );
+        }
+        return s;
     }
 
     @Override
     public String toString() {
-        return "[" + this.A.getTeamName() + "] Vs [" + this.B.getTeamName() + "]\n" + String.format("%10d - %d", this.ScoreA, this.ScoreB);
+        return ResultToString() + PlayerTableToString();
     }
 
     @Override
@@ -89,49 +103,52 @@ public class Matches {
     }
 
     public enum RoundWonBy {
-        Team1,
-        Team2,
-        Equality
+        TeamA,
+        TeamB,
     }
 
 
-    public static void main(String[] argv){
+    public static void main(String[] argv) throws Exception {
 
         Players[] plist = {
-                Players.GetInstance().setPseudo("A").setNationality("Be").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("B").setNationality("Fr").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("C").setNationality("Ge").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("D").setNationality("Us").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("E").setNationality("Uk").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("F").setNationality("Sw").setRole(Players.Status.STARTER),
-                //Players.GetInstance().setPseudo("G").setNationality("Br").setRole(Players.Status.STARTER),
-                //Players.GetInstance().setPseudo("H").setNationality("Es").setRole(Players.Status.STARTER),
+                new Players("PTG_1",true, "Be"),
+                new Players("PGT_2",true, "Be"),
+                new Players("PGT_3",true, "Be"),
+                new Players("PGT_4",true, "Be"),
+                new Players("PGT_5",true, "Be"),
         };
 
         Players[] plist2 = {
-                Players.GetInstance().setPseudo("G").setNationality("Be").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("H").setNationality("Fr").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("I").setNationality("Ge").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("J").setNationality("Us").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("K").setNationality("Uk").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("L").setNationality("Sw").setRole(Players.Status.STARTER),
-                Players.GetInstance().setPseudo("G").setNationality("Br").setRole(Players.Status.STARTER),
-                //Players.GetInstance().setPseudo("H").setNationality("Es").setRole(Players.Status.STARTER),
+                new Players("FUN_1",true, "Fr"),
+                new Players("FUN_2",true, "Fr"),
+                new Players("FUN_3",true, "Fr"),
+                new Players("FUN_4",true, "Fr"),
+                new Players("FUN_5",true, "Fr")
         };
 
         Teams t = new Teams("Quadrant");
         Teams t2 = new Teams("Sentinels");
 
+        Coach[] c = {
+                new Coach(),
+                new Coach()
+        };
+        c[0].setPseudo("Wagner");
+
+        c[1].setPseudo("Wilvers");
+
         try{
-            System.out.println("TeamA");
+            System.out.println("[" + t.getTeamName() +"]");
             for (Players x: plist) {
                 t.addPlayers(x);
             }
+            t.setTeamCoach(c[0]);
 
-            System.out.println("\nTeamB");
+            System.out.println("\n[" + t2.getTeamName() +"]");
             for (Players x: plist2) {
                 t2.addPlayers(x);
             }
+            t2.setTeamCoach(c[1]);
         }
         catch(Exception e){
             System.out.println(e.getMessage());
@@ -143,23 +160,17 @@ public class Matches {
         System.out.println();
         System.out.println("Score actuel du match : ");
         System.out.println();
-        System.out.printf("[%s] Vs [%s]%n", m.A.getTeamName(), m.B.getTeamName());
-        System.out.printf("%10d - %d%n", m.ScoreA, m.ScoreB);
-
+        System.out.printf(m.ResultToString());
 
         // Actualisation du score
-
-        m.SetRoundResult(RoundWonBy.Team1);
-        m.SetRoundResult(RoundWonBy.Team1);
-        m.SetRoundResult(RoundWonBy.Team2);
-        m.SetRoundResult(RoundWonBy.Team1);
-        m.SetRoundResult(RoundWonBy.Team1);
+        m.setRoundResult(RoundWonBy.TeamA);
+        m.setRoundResult(RoundWonBy.TeamA);
+        m.setRoundResult(RoundWonBy.TeamB);
+        m.setRoundResult(RoundWonBy.TeamA);
+        m.setRoundResult(RoundWonBy.TeamA);
 
         System.out.println();
         System.out.println("Score actuel du match : \n");
         System.out.println(m);
-
-
-
     }
 }
