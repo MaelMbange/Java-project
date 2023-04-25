@@ -4,40 +4,54 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import ProjetEsport.HCS.Classes.Participants.*;
+
+
 public class Tournament {
 
     private ArrayList<Matches> matches;
     private ArrayList<Members> membres;
-    private ArrayList<Players> joueurs;
-    private ArrayList<Coach> coachs;
+    //private ArrayList<Players> joueurs;
+    //private ArrayList<Coach> coachs;
     private ArrayList<Teams> equipes;
+    private String NomTournois;
+
+    private static Tournament instance = null;
 
 
     // faire des tests pour savoir si il faut ou non tout mettre dans members, ou non.
     // ensuite trier par type encodé lorsque l'on veut recuperer dans l'interface
-    public Tournament(){
+    private Tournament(){
         matches = new ArrayList<Matches>();
         membres = new ArrayList<Members>();
-        joueurs = new ArrayList<Players>();
-        coachs = new ArrayList<Coach>();
+        //joueurs = new ArrayList<Players>();
+        //coachs  = new ArrayList<Coach>();
         equipes = new ArrayList<Teams>();
+        NomTournois = "default";
+    }
+
+    public static Tournament getInstance(){
+        if(instance == null)
+            instance = new Tournament();
+        return instance;
+    }
+
+    public void setNomTournois(String nomTournois) {
+        NomTournois = nomTournois;
     }
 
     public void AjouterPlayer(String pseudo, boolean estTitulaire, String nationnalite) throws Exception {
-        Players p = joueurs.stream().filter(joueur -> joueur.getPseudo().equalsIgnoreCase(pseudo)).findFirst().orElse(null);
+        Players p = (Players) membres.stream().filter(joueur -> joueur.getPseudo().equalsIgnoreCase(pseudo)).findFirst().orElse(null);
         if(p != null) throw new Exception("Le joueur existe deja !");
 
         p = new Players(pseudo, estTitulaire, nationnalite);
-        joueurs.add(p);
         membres.add(p);
     }
 
     public void AjouterCoach(String pseudo, String nationnalite) throws Exception {
-        Coach c = coachs.stream().filter(coach -> coach.getPseudo().equalsIgnoreCase(pseudo)).findFirst().orElse(null);
+        Coach c = (Coach)membres.stream().filter(coach -> coach.getPseudo().equalsIgnoreCase(pseudo)).findFirst().orElse(null);
         if(c != null) throw new Exception("Le Coach existe deja !");
 
         c = new Coach(pseudo, nationnalite);
-        coachs.add(c);
         membres.add(c);
     }
 
@@ -49,11 +63,22 @@ public class Tournament {
     }
 
     public void AjouterMembreEquipe(String pseudo, String nomEquipe) throws Exception {
+
         Teams t = equipes.stream().filter(equipe -> equipe.getTeamName().equalsIgnoreCase(nomEquipe)).findFirst().orElse(null);
         if(t == null) throw new Exception("L'equipe n'existe pas !");
 
         Members m = membres.stream().filter(membre -> membre.getPseudo().equalsIgnoreCase(pseudo)).findFirst().orElse(null);
         if(m == null) throw new Exception("Le membre n'existe pas !");
+
+        Teams tm = equipes.stream().filter(equipe -> equipe.getTeamsPlayers().stream().filter(y->y.getPseudo().equalsIgnoreCase(pseudo)).findFirst().orElse(null) != null).findFirst().orElse(null);
+        if(tm != null) throw new Exception("Le joueur est deja membre d'une autre equipe !");
+
+        for(Teams x : equipes){
+            if(x != equipes.stream().filter(y->y.getTeamName().equalsIgnoreCase(nomEquipe)).findFirst().orElse(null))
+                if(x.getTeamCoach() != null)
+                    if(x.getTeamCoach().getPseudo().equalsIgnoreCase(pseudo)) throw new Exception("Le coach est deja membre d'une autre equipe !");
+        }
+
 
         if(m instanceof Players)
             t.addPlayers((Players)m);
@@ -106,11 +131,27 @@ public class Tournament {
     }
 
     public ArrayList<Players> getJoueurs() {
-        return joueurs;
+        //return joueurs;
+        ArrayList<Players> p = new ArrayList<Players>();
+        for(Members x : membres){
+            if(x instanceof Players)
+                p.add((Players)x);
+        }
+        return p;
     }
 
     public ArrayList<Coach> getCoachs() {
-        return coachs;
+        //return coachs;
+        ArrayList<Coach> p = new ArrayList<Coach>();
+        for(Members x : membres){
+            if(x instanceof Coach)
+                p.add((Coach)x);
+        }
+        return p;
+    }
+
+    public String getNomTournois() {
+        return NomTournois;
     }
 
     public ArrayList<Teams> getEquipes() {
@@ -122,26 +163,27 @@ public class Tournament {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tournament that = (Tournament) o;
-        return Objects.equals(matches, that.matches) && Objects.equals(membres, that.membres) && Objects.equals(joueurs, that.joueurs) && Objects.equals(coachs, that.coachs) && Objects.equals(equipes, that.equipes);
+        return Objects.equals(matches, that.matches) && Objects.equals(membres, that.membres) && Objects.equals(equipes, that.equipes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(matches, membres, joueurs, coachs, equipes);
+        return Objects.hash(matches, membres, equipes);
     }
 
     @Override
     public String toString() {
-        return  "====== Joueurs ======\n" + joueurs + "\n====== Coaches ======\n" + coachs.toString() + "\n====== Equipes ======\n" + equipes;
+        return  "====== Joueurs ======\n" + getJoueurs() + "\n====== Coaches ======\n" + getCoachs() + "\n====== Equipes ======\n" + equipes;
     }
 
     public static void main(String argv[]) throws Exception {
-        Tournament tournoi = new Tournament();
+        Tournament tournoi = Tournament.getInstance();
 
         try {
             //System.out.println("1");
             tournoi.AjouterCoach("Wagner", "Be");
             tournoi.AjouterCoach("Caprasse", "Fr");
+            tournoi.AjouterCoach("Günter", "De");
 
             //System.out.println("2");
             tournoi.AjouterPlayer("PTG_1",true, "Be");
@@ -156,6 +198,12 @@ public class Tournament {
             tournoi.AjouterPlayer("FUN_3",true, "Fr");
             tournoi.AjouterPlayer("FUN_4",true, "Fr");
             tournoi.AjouterPlayer("FUN_5",false, "Fr");
+
+            tournoi.AjouterPlayer("PEN_1",true, "Fr");
+            tournoi.AjouterPlayer("PEN_2",true, "Fr");
+            tournoi.AjouterPlayer("PEN_3",true, "Fr");
+            tournoi.AjouterPlayer("PEN_4",true, "Fr");
+            tournoi.AjouterPlayer("PEN_5",false, "Fr");
 
             //System.out.println("4");
             tournoi.AjouterEquipe("Requiem","We are forerunners !");
@@ -180,12 +228,12 @@ public class Tournament {
             tournoi.AjouterMembreEquipe("FUN_5", "Meridian");
 
             System.out.println();
-            tournoi.AjouterMembreEquipe("Caprasse", "Great sharity");
-            tournoi.AjouterMembreEquipe("FUN_1", "Great sharity");
-            tournoi.AjouterMembreEquipe("FUN_2", "Great sharity");
-            tournoi.AjouterMembreEquipe("FUN_3", "Great sharity");
-            tournoi.AjouterMembreEquipe("FUN_4", "Great sharity");
-            tournoi.AjouterMembreEquipe("FUN_5", "Great sharity");
+            tournoi.AjouterMembreEquipe("Günter", "Great sharity");
+            tournoi.AjouterMembreEquipe("PEN_1", "Great sharity");
+            tournoi.AjouterMembreEquipe("PEN_2", "Great sharity");
+            tournoi.AjouterMembreEquipe("PEN_3", "Great sharity");
+            tournoi.AjouterMembreEquipe("PEN_4", "Great sharity");
+            tournoi.AjouterMembreEquipe("PEN_5", "Great sharity");
 
 
             System.out.println();
@@ -196,16 +244,25 @@ public class Tournament {
             tournoi.EtablirPointPourMatch("Great sharity","Requiem", Matches.RoundWonBy.TeamA);
 
             System.out.println();
-            //System.out.println(tournoi.coachs);
-            //System.out.println(tournoi.joueurs);
-            //System.out.println(tournoi.equipes);
-            System.out.println(tournoi.matches);
+            System.out.println(tournoi.getMembers());
+            System.out.println(tournoi.getCoachs());
+            System.out.println(tournoi.getJoueurs());
+            System.out.println(tournoi.getEquipes());
+
+            System.out.println("\n\t ==== Matches ====");
+            System.out.println(tournoi.getMatches());
         }
         catch(Exception e){
             System.out.println(e.getMessage());
         }
         finally {
+            System.out.println();
+            //System.out.println(tournoi.membres);
+            //System.out.println(tournoi.getCoachs());
+            //System.out.println(tournoi.getJoueurs());
+            //System.out.println(tournoi.equipes);
+            //System.out.println(tournoi.matches);
+            System.out.println("Fin du programme !");
         }
-
     }
 }

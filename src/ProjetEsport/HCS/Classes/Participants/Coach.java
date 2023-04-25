@@ -12,6 +12,7 @@ public class Coach extends Members implements Cloneable{
         this.Pseudo = pseudo;
         this.setNationality(Location);
     }
+
     public Coach(int id, String pseudo, String Location){
         super(id);
         this.Pseudo = pseudo;
@@ -30,10 +31,6 @@ public class Coach extends Members implements Cloneable{
             throw new AssertionError();
         }
     }
-
-
-
-
     public static void main(String argv[]){
         Coach c = new Coach("PTG","Be");
         Coach cc = c.clone();

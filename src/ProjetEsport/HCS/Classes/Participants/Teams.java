@@ -1,8 +1,9 @@
 package ProjetEsport.HCS.Classes.Participants;
 
 import java.util.*;
+import ProjetEsport.HCS.Classes.Interfaces.getInstanceAt;
 
-public class Teams {
+public class Teams implements getInstanceAt<Members>{
     private ArrayList<Players> TeamsPlayers;
     private Coach TeamCoach;
     private String TeamName;
@@ -96,10 +97,16 @@ public class Teams {
         Teams teams = (Teams) o;
         return Objects.equals(TeamsPlayers, teams.TeamsPlayers) && Objects.equals(TeamName, teams.TeamName) && Objects.equals(Description, teams.Description);
     }
-
     @Override
     public int hashCode() {
         return Objects.hash(TeamsPlayers, TeamCoach, TeamName, Description);
+    }
+
+    @Override
+    public Members getInstance(int n) {
+        //return TeamsPlayers.get(n);
+        if(n == 6) return TeamCoach;
+        return TeamsPlayers.get(n);
     }
 
     public static void main(String[] argv){

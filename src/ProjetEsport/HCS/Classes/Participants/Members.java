@@ -20,6 +20,7 @@ public abstract class Members {
         this.Nationality = Locale.getDefault(); //new Locale("en",country);
         Pseudo = "Default";
     }
+
     public Members(int id){
         this.ID = id;
     }
