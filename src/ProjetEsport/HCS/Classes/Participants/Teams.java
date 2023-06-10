@@ -9,7 +9,7 @@ public class Teams implements getInstanceAt<Members>{
     private String TeamName;
     private String Description;
 
-    private Teams(){
+    public Teams(){
     }
 
     // Creer une instance d'equipe
@@ -30,7 +30,7 @@ public class Teams implements getInstanceAt<Members>{
     }
 
     // Ajouter un joueur
-    public void addPlayers(Players player) throws Exception {
+    public void AjouterJoueur(Players player) throws Exception {
         if(TeamsPlayers.size() < 5)
             if(!TeamsPlayers.contains(player)){
                 TeamsPlayers.add(player);
@@ -38,6 +38,15 @@ public class Teams implements getInstanceAt<Members>{
             }
             else throw new Exception("The player your trying to add is already in the team!");
         else throw new Exception("Max amount of players has already been reached!");
+    }
+
+    // Supprimer un joueur
+    public void SupprimerJoueur(Players player) throws Exception {
+        if(TeamsPlayers.contains(player)){
+            TeamsPlayers.remove(player);
+            System.out.printf("[%s] Joueur supprime !\n",this.TeamName);
+        }
+        else throw new Exception("The player your trying to remove is not in the team!");
     }
 
     // Mettre une petite description  à l'équipe
@@ -58,6 +67,13 @@ public class Teams implements getInstanceAt<Members>{
         this.TeamCoach = c;
         System.out.printf("[%s] Coach  ajoute !\n",this.TeamName);
     }
+
+    // suppression du coach
+    public void supprimerCoach(){
+        this.TeamCoach = null;
+        System.out.printf("[%s] Coach supprime !\n",this.TeamName);
+    }
+
     public String getTeamName() {
         return TeamName;
     }
@@ -72,6 +88,12 @@ public class Teams implements getInstanceAt<Members>{
     }
     public ArrayList<Players> getTeamsPlayers() {
         return TeamsPlayers;
+    }
+
+    public ArrayList<Members> getAllMembers(){
+        ArrayList<Members> listMembres = new ArrayList<>(TeamsPlayers);
+        listMembres.add(TeamCoach);
+        return listMembres;
     }
     @Override
     public String toString() {
@@ -127,7 +149,7 @@ public class Teams implements getInstanceAt<Members>{
             Coach c = new Coach("Wagner","Be");
             teams.setTeamCoach(c);
 
-            Locale Place = new Locale("En");
+            //Locale Place = new Locale("En");
 
             System.out.println(teams);
         }

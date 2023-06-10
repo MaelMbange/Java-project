@@ -1,39 +1,41 @@
 package ProjetEsport.HCS.Classes.Participants;
 
-import java.lang.reflect.Member;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.Objects;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public abstract class Members {
     protected int ID;
     protected static int CurrentId = 1;
-    protected final Calendar RegisterTime = Calendar.getInstance();
+    protected LocalDate RegisterTime = LocalDate.now();
     protected Locale Nationality;
-
     protected String Pseudo;
+    protected Teams equipe;
 
     public Members(){
         this.ID = CurrentId;
         CurrentId++;
         this.Nationality = Locale.getDefault(); //new Locale("en",country);
         Pseudo = "Default";
+        RegisterTime = LocalDate.now();
+        equipe = null;
     }
 
     public Members(int id){
         this.ID = id;
+        RegisterTime = LocalDate.now();
+        equipe = null;
     }
 
     // ================================== GETTERS ======================================
     public String getRegisterTime(Locale selectedLocation) {
-        SimpleDateFormat sdf = new SimpleDateFormat("d MMMM, yyyy",selectedLocation);
-        return sdf.format(RegisterTime.getTime());
+        DateTimeFormatter sdf =  DateTimeFormatter.ofPattern("d MMMM, yyyy");
+        return sdf.format(RegisterTime);
     }
 
     public String getRegisterTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("d MMMM, yyyy");
-        return sdf.format(RegisterTime.getTime());
+        DateTimeFormatter sdf =  DateTimeFormatter.ofPattern("d MMMM, yyyy");
+        return sdf.format(RegisterTime);
     }
 
     public int getID() {
@@ -54,6 +56,10 @@ public abstract class Members {
         return Pseudo;
     }
 
+    public Teams getEquipe() {
+        return equipe;
+    }
+
 
     // =====================================================================================
     public void setNationality(String CountryCode) {
@@ -65,6 +71,15 @@ public abstract class Members {
 
     public void setPseudo(String pseudo) {
         Pseudo = pseudo;
+    }
+
+    public void setRegisterTime(int Jour, int Mois, int Annee){
+        RegisterTime = LocalDate.of(Annee,Mois,Jour);
+        System.out.println(RegisterTime);
+    }
+
+    public void setEquipe(Teams equipe) {
+        this.equipe = equipe;
     }
 
     // =====================================================================================
@@ -83,6 +98,7 @@ public abstract class Members {
 
     public static void main(String[] argv){
         Members m = new Players("PTG_1",true,"Be");
+        m.setRegisterTime(10, 3, 2001);
         System.out.println(m);
 
         m = new Coach("Wagner","Be");

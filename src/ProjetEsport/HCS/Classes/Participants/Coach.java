@@ -1,9 +1,5 @@
 package ProjetEsport.HCS.Classes.Participants;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.Objects;
-
 public class Coach extends Members implements Cloneable{
 
     public Coach(){}

@@ -14,7 +14,8 @@ public class Matches {
     private int RoundNumber;
 
     private boolean StateOfMatch;
-    private Matches(){}
+
+    public Matches(){}
 
     public Matches(Teams a, Teams b){
         this.A = a;
@@ -42,8 +43,16 @@ public class Matches {
     public int getScoreB() {
         return ScoreB;
     }
-
+    public final boolean getStatusMatch() {return StateOfMatch;}
     // ========================== SETTERS ===========================================
+    public void setScoreA(int scoreA) {
+        ScoreA = scoreA;
+    }
+
+    public void setScoreB(int scoreB) {
+        ScoreB = scoreB;
+    }
+    
     public void setA(Teams a) {
         A = a;
     }
@@ -52,7 +61,7 @@ public class Matches {
         B = b;
     }
 
-    public void setRoundResult(RoundWonBy result) {
+    public void setMancheGagnePar(RoundWonBy result) {
         if(!StateOfMatch) return;
 
         if(ScoreA < RoundNumber/2+1 || ScoreB < RoundNumber/2+1){
@@ -66,7 +75,7 @@ public class Matches {
         }
     }
 
-    public void setRoundNumber(int roundNumber) throws Exception {
+    public void setNombreManches(int roundNumber) throws Exception {
         if(roundNumber <= 5)
             RoundNumber = roundNumber;
         else throw new Exception("Le nombre de round ne peut etre superieur a 5");
@@ -140,13 +149,13 @@ public class Matches {
         try{
             System.out.println("[" + t.getTeamName() +"]");
             for (Players x: plist) {
-                t.addPlayers(x);
+                t.AjouterJoueur(x);
             }
             t.setTeamCoach(c[0]);
 
             System.out.println("\n[" + t2.getTeamName() +"]");
             for (Players x: plist2) {
-                t2.addPlayers(x);
+                t2.AjouterJoueur(x);
             }
             t2.setTeamCoach(c[1]);
         }
@@ -155,7 +164,7 @@ public class Matches {
         }
 
         Matches m = new Matches(t, t2);
-        m.setRoundNumber(5);
+        m.setNombreManches(5);
 
         System.out.println();
         System.out.println("Score actuel du match : ");
@@ -163,11 +172,11 @@ public class Matches {
         System.out.printf(m.ResultToString());
 
         // Actualisation du score
-        m.setRoundResult(RoundWonBy.TeamA);
-        m.setRoundResult(RoundWonBy.TeamA);
-        m.setRoundResult(RoundWonBy.TeamB);
-        m.setRoundResult(RoundWonBy.TeamA);
-        m.setRoundResult(RoundWonBy.TeamA);
+        m.setMancheGagnePar(RoundWonBy.TeamA);
+        m.setMancheGagnePar(RoundWonBy.TeamA);
+        m.setMancheGagnePar(RoundWonBy.TeamB);
+        m.setMancheGagnePar(RoundWonBy.TeamA);
+        m.setMancheGagnePar(RoundWonBy.TeamA);
 
         System.out.println();
         System.out.println("Score actuel du match : \n");

@@ -1,6 +1,4 @@
 package ProjetEsport.HCS.Classes.Participants;
-
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -8,7 +6,7 @@ public class Players extends Members implements Comparable<Players>, Cloneable
 {
     private Status Role;
 
-    private Players(){
+    public Players(){
         super();
     }
     public Players(String Pseudo, boolean isStarter, String location){
@@ -48,11 +46,6 @@ public class Players extends Members implements Comparable<Players>, Cloneable
         return this;
     }
 
-    private Players setRegisterTime(int Day, int Month, int Year) {
-        this.RegisterTime.clear();
-        RegisterTime.set(Year,Month,Day);
-        return this;
-    }
     /***************************************************************************************/
 
 
