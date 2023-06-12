@@ -30,9 +30,9 @@ public class Tournoi {
 
     //============= Partie Matche =============
 
-    public void AjouterMatch(Teams a, Teams b){
+    public void AjouterMatch(Teams a, Teams b, int roundNumber){
         if(!(tableMatch.containsKey(a.getTeamName()+" - "+b.getTeamName()) || tableMatch.containsKey(b.getTeamName()+" - "+a.getTeamName()))){
-            tableMatch.put(a.getTeamName()+" - "+b.getTeamName(),new Matches(a,b));
+            tableMatch.put(a.getTeamName()+" - "+b.getTeamName(),new Matches(a,b,roundNumber));
         }
     }
 
@@ -65,14 +65,13 @@ public class Tournoi {
 
     public void AjouterUneEquipe(String teamName,String description){
         if(teamName != null && !teamName.isEmpty()){
+            System.out.println("Ajout de l'equipe reussie!");
             tableEquipe.put(teamName,new Teams(teamName,description));
         }
     }
 
     public void RetirerUneEquipe(String nomEquipe){
-        if(tableEquipe.containsKey(nomEquipe)){
-            tableEquipe.remove(nomEquipe);
-        }
+        tableEquipe.remove(nomEquipe);
     }
 
     public void AjouterMembreEquipe(String nomEquipe, Members membre) throws Exception{

@@ -2,8 +2,9 @@ package ProjetEsport.HCS.Classes.Participants;
 
 import java.util.*;
 import ProjetEsport.HCS.Classes.Interfaces.getInstanceAt;
+import org.jetbrains.annotations.NotNull;
 
-public class Teams implements getInstanceAt<Members>{
+public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Teams>{
     private ArrayList<Players> TeamsPlayers;
     private Coach TeamCoach;
     private String TeamName;
@@ -34,6 +35,7 @@ public class Teams implements getInstanceAt<Members>{
         if(TeamsPlayers.size() < 5)
             if(!TeamsPlayers.contains(player)){
                 TeamsPlayers.add(player);
+                player.setEquipe(this);
                 System.out.printf("[%s] Joueur ajoute !\n",this.TeamName);
             }
             else throw new Exception("The player your trying to add is already in the team!");
@@ -51,20 +53,22 @@ public class Teams implements getInstanceAt<Members>{
 
     // Mettre une petite description  à l'équipe
     public void setDescription(String description) throws Exception {
-        if(description == null) throw new Exception("Description can't be null");
+        if(description == null){
+            Description = "";
+            return;
+        }
         if(description.length() <= 200)
             Description = description;
-        else throw new Exception("Description is the same as before!");
     }
 
     // Etablir le nom de l'équipe
     public void setTeamName(String teamName) throws Exception {
         if(!TeamName.equals(teamName))
             TeamName = teamName;
-        else throw new Exception("TeamName is the same as before!");
     }
     public void setTeamCoach(Coach c){
         this.TeamCoach = c;
+        c.setEquipe(this);
         System.out.printf("[%s] Coach  ajoute !\n",this.TeamName);
     }
 
@@ -113,6 +117,11 @@ public class Teams implements getInstanceAt<Members>{
     }
 
     @Override
+    public int compareTo(@NotNull Teams o) {
+        return this.getTeamName().compareTo(o.getTeamName());
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -129,6 +138,16 @@ public class Teams implements getInstanceAt<Members>{
         //return TeamsPlayers.get(n);
         if(n == 6) return TeamCoach;
         return TeamsPlayers.get(n);
+    }
+
+    @Override
+    public Teams clone() {
+        try
+        {
+            return (Teams) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
     public static void main(String[] argv){
@@ -157,4 +176,5 @@ public class Teams implements getInstanceAt<Members>{
             System.out.println(e.getMessage());
         }
     }
+
 }

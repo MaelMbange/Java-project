@@ -105,6 +105,10 @@ public class PanelAjouterMatch extends JPanel {
     public JComboBox<Integer> getNombreDeManches() {
         return nombreDeManches;
     }
+
+    public int getNombreDeMancheInt(){
+        return (int)nombreDeManches.getSelectedItem();
+    }
     // ===============================================
 
     public static void main(String[] argv){

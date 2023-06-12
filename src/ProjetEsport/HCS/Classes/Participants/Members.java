@@ -1,10 +1,12 @@
 package ProjetEsport.HCS.Classes.Participants;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public abstract class Members {
+public abstract class Members implements Comparable<Members>{
     protected int ID;
     protected static int CurrentId = 1;
     protected LocalDate RegisterTime = LocalDate.now();
@@ -89,6 +91,11 @@ public abstract class Members {
         if (o == null || getClass() != o.getClass()) return false;
         Members members = (Members) o;
         return ID == members.ID && Objects.equals(RegisterTime, members.RegisterTime) && Objects.equals(Nationality, members.Nationality) && Objects.equals(Pseudo, members.Pseudo);
+    }
+
+    @Override
+    public int compareTo(@NotNull Members o) {
+        return Integer.compare(this.ID,o.ID);
     }
 
     @Override

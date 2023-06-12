@@ -26,6 +26,15 @@ public class Matches {
         StateOfMatch = true;
     }
 
+    public Matches(Teams a, Teams b,int roundNumber){
+        this.A = a;
+        this.B = b;
+        ScoreA = 0;
+        ScoreB = 0;
+        RoundNumber = roundNumber;
+        StateOfMatch = true;
+    }
+
 
     // ========================== GETTERS ===========================================
     public Teams getA() {
@@ -43,14 +52,22 @@ public class Matches {
     public int getScoreB() {
         return ScoreB;
     }
-    public final boolean getStatusMatch() {return StateOfMatch;}
+    public final boolean isMatchActive() {return StateOfMatch;}
+
+    public int getROundNumber(){return RoundNumber;}
     // ========================== SETTERS ===========================================
     public void setScoreA(int scoreA) {
-        ScoreA = scoreA;
+       if(scoreA <= RoundNumber)
+            ScoreA = scoreA;
     }
 
     public void setScoreB(int scoreB) {
-        ScoreB = scoreB;
+        if(scoreB <= RoundNumber)
+            ScoreB = scoreB;
+    }
+
+    public void setStatus(boolean actif){
+        StateOfMatch = actif;
     }
     
     public void setA(Teams a) {

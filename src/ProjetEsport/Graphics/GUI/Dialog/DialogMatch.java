@@ -1,11 +1,10 @@
-package ProjetEsport.Graphics.GUI;
+package ProjetEsport.Graphics.GUI.Dialog;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Hashtable;
 
+import ProjetEsport.Graphics.GUI.PanelAjouterMatch;
 import ProjetEsport.HCS.Classes.Participants.Teams;
 
 public class DialogMatch extends JDialog {
@@ -88,6 +87,7 @@ public class DialogMatch extends JDialog {
     public String getComboBoxBSelectedItem(){
         return (String)panel1.getEquipeB().getSelectedItem();
     }
+    public int getNombreDeManche(){return panel1.getNombreDeMancheInt();}
     // =====================================================
 
     public static void main(String[] argv){

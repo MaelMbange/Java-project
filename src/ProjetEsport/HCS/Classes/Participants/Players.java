@@ -2,8 +2,7 @@ package ProjetEsport.HCS.Classes.Participants;
 import java.util.*;
 
 
-public class Players extends Members implements Comparable<Players>, Cloneable
-{
+public class Players extends Members implements Comparator<Members> {
     private Status Role;
 
     public Players(){
@@ -37,22 +36,13 @@ public class Players extends Members implements Comparable<Players>, Cloneable
 
     /****************************************************************************************/
 
-
-
     /****************************** Set Members Function ************************************/
-
     public Players setRole(Status role) {
         Role = role;
         return this;
     }
-
     /***************************************************************************************/
 
-
-    @Override
-    public int compareTo(Players o) {
-        return this.Pseudo.compareTo(o.Pseudo);
-    }
 
     @Override
     public String toString() {
@@ -67,6 +57,12 @@ public class Players extends Members implements Comparable<Players>, Cloneable
             throw new AssertionError();
         }
     }
+
+    @Override
+    public int compare(Members o1, Members o2) {
+        return Integer.compare(o1.ID,o2.ID);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
