@@ -55,7 +55,7 @@ public class DialogEquipeAffichage extends JDialog {
         textDescription.setEditable(false);
 
         tableJoueur.setModel(new modelTableParticipantAffichage(t));
-        pack();
+        //pack();
     }
 
     public static void main(String[] args) {

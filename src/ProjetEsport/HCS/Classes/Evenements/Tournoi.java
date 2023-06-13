@@ -41,9 +41,15 @@ public class Tournoi {
         tableMatch.get(matchKey).setScoreB(scoreB);
     }
 
-    public void RetirerMatch(String matchKey){
-        if(tableMatch.containsKey(matchKey)){
-            tableMatch.remove(matchKey);
+    public void RetirerMatch(Matches matches){
+        String v1 = matches.getA().getTeamName() + " - " + matches.getB().getTeamName();
+        String v2 = matches.getB().getTeamName() + " - " + matches.getA().getTeamName();
+
+        if(tableMatch.containsKey(v1)){
+            tableMatch.remove(v1);
+        }
+        else if(tableMatch.containsKey(v2)){
+            tableMatch.remove(v2);
         }
     }
 
@@ -73,6 +79,7 @@ public class Tournoi {
     public void RetirerUneEquipe(String nomEquipe){
         tableEquipe.remove(nomEquipe);
     }
+
 
     public void AjouterMembreEquipe(String nomEquipe, Members membre) throws Exception{
         if(tableEquipe.containsKey(nomEquipe)){

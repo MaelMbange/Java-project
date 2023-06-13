@@ -36,7 +36,7 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
                 Fenetre.setListEquipe(new ArrayList<>(tournoi.getTableEquipe().values()));
             }
             else if(selectedIndex == 2){
-                Fenetre.getListEquipe().removeAll();
+                Fenetre.getListParticipant().removeAll();
                 Fenetre.setListParticipant(new ArrayList<>(tournoi.getTableEquipe().values()));
             }
         }
@@ -73,11 +73,21 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
             Fenetre.setListEquipe(new ArrayList<>(tournoi.getTableEquipe().values()));
 
         }else if(e.getSource() == Fenetre.getButtonSupprimerEquipe() || e.getSource() == Fenetre.getMenuItemSupprimerEquipe()){
-            JDialog j = new JDialog(Fenetre,"ClickButton SUpEquipe",true);
-            j.setLocation(200,200);
-            j.setSize(200,200);
-            j.setVisible(true);
-            j.dispose();
+
+            int selectedRow = Fenetre.getListEquipe().getSelectedRow();
+            if(selectedRow != -1){
+
+                modelTableEquipe mtm = (modelTableEquipe)Fenetre.getListEquipe().getModel();
+                Teams equipeSelected = mtm.getRowTeams(selectedRow);
+
+                tournoi.RetirerUneEquipe(equipeSelected.getTeamName());
+
+                Fenetre.getListEquipe().removeAll();
+                Fenetre.setListEquipe(new ArrayList<>(tournoi.getTableEquipe().values()));
+            }
+            else
+                JOptionPane.showMessageDialog(Fenetre,"Aucune equipe existante ou selectionnee!\nSuppression impossible!","Equipe",JOptionPane.INFORMATION_MESSAGE);
+
         }else if(e.getSource() == Fenetre.getButtonAjouterMatch() || e.getSource() == Fenetre.getMenuItemAjouterMatch()){
 
             if(!tournoi.getTableEquipe().isEmpty()){
@@ -100,17 +110,28 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
 
 
         }else if(e.getSource() == Fenetre.getButtonSupprimerMatch() || e.getSource() == Fenetre.getMenuItemSupprimerMatch()){
-            JDialog j = new JDialog(Fenetre,"ClickButton SupMatch",true);
-            j.setLocation(200,200);
-            j.setSize(200,200);
-            j.setVisible(true);
-            j.dispose();
+
+            int selectedRow = Fenetre.getListMatch().getSelectedRow();
+            if(selectedRow != -1){
+
+                modelTableMatch mtm = (modelTableMatch)Fenetre.getListMatch().getModel();
+                Matches matchSelected = mtm.getRowMatch(selectedRow);
+
+                tournoi.RetirerMatch(matchSelected);
+
+                Fenetre.getListMatch().removeAll();
+                Fenetre.setListMatch(new ArrayList<>(tournoi.getTableMatch().values()));
+            }
+            else
+                JOptionPane.showMessageDialog(Fenetre,"Aucun match existant ou selectionne!\nPas d'affichage possible!","Match",JOptionPane.INFORMATION_MESSAGE);
+
         }else if(e.getSource() == Fenetre.getButtonInfoSupplementaire()){
             JDialog j = new JDialog(Fenetre,"ClickButton ButtonInfoSup",true);
             j.setLocation(200,200);
             j.setSize(200,200);
             j.setVisible(true);
             j.dispose();
+
         }
         else if(e.getSource() == Fenetre.getButtonAfficherMatch()){
 
@@ -174,8 +195,13 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
                 dme.setVisible(true);
                 dme.dispose();
 
+                System.out.println("tournoi equipes : " + tournoi.getTableEquipe().values());
+
                 Fenetre.getListEquipe().removeAll();
                 Fenetre.setListEquipe(new ArrayList<>(tournoi.getTableEquipe().values()));
+
+                Fenetre.getListParticipant().removeAll();
+                Fenetre.setListParticipant(new ArrayList<>(tournoi.getTableEquipe().values()));
             }
             else
                 JOptionPane.showMessageDialog(Fenetre,"Aucune equipe existante ou selectionnee!\nModification impossible","Equipe",JOptionPane.INFORMATION_MESSAGE);

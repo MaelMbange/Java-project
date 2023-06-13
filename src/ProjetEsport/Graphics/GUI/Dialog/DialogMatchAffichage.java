@@ -87,7 +87,7 @@ public class DialogMatchAffichage extends JDialog {
         LabelScoreA.setText(String.valueOf(m.getScoreA()));
         LabelScoreB.setText(String.valueOf(m.getScoreB()));
         LabelStatus.setText((m.isMatchActive())?"En cours":"Est termine");
-        pack();
+        //pack();
     }
 
     public static void main(String[] args) {

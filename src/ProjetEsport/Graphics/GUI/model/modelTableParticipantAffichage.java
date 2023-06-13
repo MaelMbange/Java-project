@@ -16,10 +16,13 @@ public class modelTableParticipantAffichage extends AbstractTableModel {
 
     public modelTableParticipantAffichage(Teams equipe){
         membres = new ArrayList<>();
-        if(equipe.getAllMembers().isEmpty()){
+        if(!equipe.getAllMembers().isEmpty()){
             membres.addAll(equipe.getAllMembers());
             membres.sort(Members::compareTo);
+            System.out.println("model participant affichage" +equipe);
         }
+        else
+            System.out.println("model participant Affichage condition non valide" +equipe);
     }
 
     @Override
@@ -51,7 +54,7 @@ public class modelTableParticipantAffichage extends AbstractTableModel {
                 if(membre instanceof Players)
                     return "Joueur [" + ((Players) membre).getRole().name() + "]";
             default:
-                return null;
+                return "";
         }
     }
 
