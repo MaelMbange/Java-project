@@ -12,17 +12,17 @@ import java.util.List;
 public class modelTableParticipantAffichage extends AbstractTableModel {
 
     private List<Members> membres;
-    private String[] nomColonnes = {"Id","Pseudo","Date enregistrement","Nationnalite","Type"};
+    private final String[] nomColonnes = {"Id","Pseudo","Date enregistrement","Nationnalite","Type"};
 
     public modelTableParticipantAffichage(Teams equipe){
         membres = new ArrayList<>();
         if(!equipe.getAllMembers().isEmpty()){
             membres.addAll(equipe.getAllMembers());
             membres.sort(Members::compareTo);
-            System.out.println("model participant affichage" +equipe);
+            System.out.println("model participant affichage" + equipe);
         }
         else
-            System.out.println("model participant Affichage condition non valide" +equipe);
+            System.out.println("model participant Affichage condition non valide" + equipe);
     }
 
     @Override

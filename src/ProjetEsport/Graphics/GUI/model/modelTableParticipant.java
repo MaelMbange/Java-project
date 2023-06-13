@@ -12,7 +12,7 @@ import java.util.List;
 public class modelTableParticipant extends AbstractTableModel {
 
     private List<Members> participants;
-    private String[] nomColonnes = {"Id","Pseudo","Date enregistrement","Nationnalite","Type","Nom equipe"};
+    private final String[] nomColonnes = {"Id","Pseudo","Date enregistrement","Nationnalite","Type","Nom equipe"};
 
     public modelTableParticipant(List<Teams> equipes){
         participants = new ArrayList<>();

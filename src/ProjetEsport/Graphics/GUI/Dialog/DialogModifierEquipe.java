@@ -28,7 +28,6 @@ public class DialogModifierEquipe extends JDialog {
         setModal(true);
         setTitle("Modifier Equipe");
 
-        tableMembres = new JTable();
         tableMembres.setCellEditor(null);
 
         this.setSize(600,600);
