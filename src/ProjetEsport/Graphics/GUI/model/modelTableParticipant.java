@@ -65,4 +65,8 @@ public class modelTableParticipant extends AbstractTableModel {
     public String getColumnName(int column) {
         return nomColonnes[column];
     }
+
+    public Members getRowMembers(int RowIndex){
+        return participants.get(RowIndex);
+    }
 }

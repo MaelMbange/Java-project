@@ -45,9 +45,10 @@ public class DIalogNouveauMembre extends JDialog {
         group.add(radioTitulaire);
         group.add(radioRemplacant);
 
-        checkBoxCoach.setSelected(true);
-        radioTitulaire.setEnabled(false);
-        radioRemplacant.setEnabled(false);
+        checkBoxCoach.setSelected(false);
+        radioTitulaire.setSelected(true);
+        radioTitulaire.setEnabled(true);
+        radioRemplacant.setEnabled(true);
 
         checkBoxCoach.addActionListener(e->{
             if(checkBoxCoach.isSelected()){

@@ -1,10 +1,10 @@
 package ProjetEsport.Graphics.GUI.Dialog;
 
-import ProjetEsport.Graphics.GUI.model.modelTableParticipant;
 import ProjetEsport.Graphics.GUI.model.modelTableParticipantAffichage;
 import ProjetEsport.HCS.Classes.Participants.Teams;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class DialogEquipeAffichage extends JDialog {
@@ -13,6 +13,7 @@ public class DialogEquipeAffichage extends JDialog {
     private JLabel labelNomEquipe;
     private JTable tableJoueur;
     private JTextPane textDescription;
+    private JLabel ImageEquipe;
 
     public DialogEquipeAffichage() {
         setContentPane(contentPane);
@@ -55,6 +56,11 @@ public class DialogEquipeAffichage extends JDialog {
         textDescription.setEditable(false);
 
         tableJoueur.setModel(new modelTableParticipantAffichage(t));
+
+        Image image = new ImageIcon(t.getImage()).getImage();
+        Image resisedImage = image.getScaledInstance(100,100,Image.SCALE_SMOOTH);
+
+        this.ImageEquipe.setIcon(new ImageIcon(resisedImage));
         //pack();
     }
 

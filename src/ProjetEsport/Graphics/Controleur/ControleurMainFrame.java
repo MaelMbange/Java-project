@@ -11,6 +11,8 @@ import ProjetEsport.Graphics.GUI.Dialog.*;
 import ProjetEsport.Graphics.GUI.model.*;
 import ProjetEsport.HCS.Classes.Evenements.Matches;
 import ProjetEsport.HCS.Classes.Evenements.Tournoi;
+import ProjetEsport.HCS.Classes.Participants.Members;
+import ProjetEsport.HCS.Classes.Participants.Players;
 import ProjetEsport.HCS.Classes.Participants.Teams;
 
 public class ControleurMainFrame extends WindowAdapter implements ActionListener, MouseListener, ChangeListener
@@ -60,6 +62,7 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
         }else if(e.getSource() == Fenetre.getMenuItemQuitter()){
             Fenetre.setVisible(false);
             Fenetre.dispose();
+
         }else if(e.getSource() == Fenetre.getButtonAjouterEquipe() ||e.getSource() == Fenetre.getMenuItemAjouterEquipe()){
             DialogAjouterEquipe dae = new DialogAjouterEquipe();
             dae.setInformation(tournoi.getTableEquipe().keySet().toArray(new String[0]));
@@ -126,11 +129,20 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
                 JOptionPane.showMessageDialog(Fenetre,"Aucun match existant ou selectionne!\nPas d'affichage possible!","Match",JOptionPane.INFORMATION_MESSAGE);
 
         }else if(e.getSource() == Fenetre.getButtonInfoSupplementaire()){
-            JDialog j = new JDialog(Fenetre,"ClickButton ButtonInfoSup",true);
-            j.setLocation(200,200);
-            j.setSize(200,200);
-            j.setVisible(true);
-            j.dispose();
+
+            int selectedRow = Fenetre.getListParticipant().getSelectedRow();
+            if(selectedRow != -1) {
+                DialogAffichageParticipant dap = new DialogAffichageParticipant();
+
+                modelTableParticipant mtp = (modelTableParticipant) Fenetre.getListParticipant().getModel();
+                Members membreSelected = mtp.getRowMembers(selectedRow);
+
+                dap.setInformation(membreSelected);
+                dap.setVisible(true);
+                dap.dispose();
+            }
+            else
+                JOptionPane.showMessageDialog(Fenetre,"Aucun participant existant ou selectionne!\nPas d'affichage possible!","Participant",JOptionPane.INFORMATION_MESSAGE);
 
         }
         else if(e.getSource() == Fenetre.getButtonAfficherMatch()){
@@ -216,6 +228,7 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
         if(e.getClickCount() == 2){
             if(Fenetre.getPanneau().getSelectedComponent() == Fenetre.getPanelMatch()){
                 DialogMatchAffichage dma = new DialogMatchAffichage();
@@ -240,7 +253,17 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
                     dea.dispose();
                 }
             }else if(Fenetre.getPanneau().getSelectedComponent() == Fenetre.getPanelParticipant()){
+                int selectedRow = Fenetre.getListParticipant().getSelectedRow();
+                if(selectedRow != -1) {
+                    DialogAffichageParticipant dap = new DialogAffichageParticipant();
 
+                    modelTableParticipant mtp = (modelTableParticipant) Fenetre.getListParticipant().getModel();
+                    Members membreSelected = mtp.getRowMembers(selectedRow);
+
+                    dap.setInformation(membreSelected);
+                    dap.setVisible(true);
+                    dap.dispose();
+                }
             }
         }
     }

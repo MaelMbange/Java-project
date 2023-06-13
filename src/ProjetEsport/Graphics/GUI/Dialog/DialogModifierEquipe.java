@@ -6,6 +6,7 @@ import ProjetEsport.HCS.Classes.Participants.Teams;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import java.awt.*;
 import java.awt.event.*;
 
 public class DialogModifierEquipe extends JDialog {
@@ -20,6 +21,7 @@ public class DialogModifierEquipe extends JDialog {
     private JTable tableMembres;
 
     private JButton ajouterUnMembreButton;
+    private JLabel ImageEquipe;
 
     private Teams EquipeEnCours;
     private Teams EquipeAttente;
@@ -109,6 +111,11 @@ public class DialogModifierEquipe extends JDialog {
 
         this.textFieldNomEquipe.setText(EquipeAttente.getTeamName());
         this.textAreaDescription.setText(EquipeAttente.getDescription());
+
+        Image image = new ImageIcon(this.EquipeEnCours.getImage()).getImage();
+        Image resisedImage = image.getScaledInstance(100,100,Image.SCALE_SMOOTH);
+
+        this.ImageEquipe.setIcon(new ImageIcon(resisedImage));
 
         //pack();
     }

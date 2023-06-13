@@ -1,5 +1,6 @@
 package ProjetEsport.Graphics.GUI.model;
 
+import ProjetEsport.HCS.Classes.Evenements.Matches;
 import ProjetEsport.HCS.Classes.Participants.Coach;
 import ProjetEsport.HCS.Classes.Participants.Members;
 import ProjetEsport.HCS.Classes.Participants.Players;
@@ -58,5 +59,9 @@ public class modelTableParticipantAffichage extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         return nomColonnes[column];
+    }
+
+    public Members getRowMembers(int RowIndex){
+        return membres.get(RowIndex);
     }
 }

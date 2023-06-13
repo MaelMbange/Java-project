@@ -36,13 +36,6 @@ public class mainFrame extends JFrame
     private JButton buttonAfficherMatch;
     private JButton buttonAfficherEquipe;
 
-    private JLabel labelParticipantId;
-    private JLabel labelParticipantPseudo;
-    private JLabel labelParticipantNomEquipe;
-    private JLabel labelParticipantNationalite;
-    private JLabel labelParticipantDateEnregistrement;
-    private JLabel labelParticipantTypeMembre;
-    private JLabel labelParticipantRole;
     private JButton buttonInfoSupplementaire;
 
     /*private JList<String> listMatch;
@@ -120,22 +113,7 @@ public class mainFrame extends JFrame
         buttonAfficherMatch = new JButton("Afficher");
         buttonAfficherEquipe = new JButton("Afficher");
 
-        labelParticipantId = new JLabel("Id : ");
-        labelParticipantPseudo = new JLabel("Pseudo : ");
-        labelParticipantNomEquipe = new JLabel("Nom de l'équipe : ");
-        labelParticipantNationalite = new JLabel("Nationalité : ");
-        labelParticipantDateEnregistrement = new JLabel("Date d'enregistrement : ");
-        labelParticipantTypeMembre = new JLabel("Type de membre : ");
-        labelParticipantRole = new JLabel("Role : ");
         buttonInfoSupplementaire = new JButton("Afficher plus d'information");
-
-        labelParticipantId.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        labelParticipantPseudo.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        labelParticipantNomEquipe.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        labelParticipantNationalite.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        labelParticipantDateEnregistrement.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        labelParticipantTypeMembre.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-        labelParticipantRole.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         buttonInfoSupplementaire.setBorder(BorderFactory.createCompoundBorder());
 
         /*listMatch = new JList<>();
@@ -205,21 +183,10 @@ public class mainFrame extends JFrame
         listParticipant.setCellEditor(null);
 
         // ======= Panel information participant =======
-        JPanel panelInformationParticpant = new JPanel(new GridLayout(3,3));
-        // row 1
-        panelInformationParticpant.add(labelParticipantId);
-        panelInformationParticpant.add(labelParticipantPseudo);
-        panelInformationParticpant.add(labelParticipantNomEquipe);
-        // row 2
-        panelInformationParticpant.add(labelParticipantNationalite);
-        panelInformationParticpant.add(labelParticipantDateEnregistrement);
+        JPanel panelInformationParticpant = new JPanel(new GridLayout(1,1));
         panelInformationParticpant.add(buttonInfoSupplementaire);
-        // row 3
-        panelInformationParticpant.add(labelParticipantTypeMembre);
-        panelInformationParticpant.add(labelParticipantRole);
-        panelInformationParticpant.add(new JLabel());
         // State of visibility
-        panelInformationParticpant.setVisible(false);
+        panelInformationParticpant.setVisible(true);
         // ============================================
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
@@ -240,10 +207,11 @@ public class mainFrame extends JFrame
             gridBagConstraints.gridy = 1;
         panelEquipe.add(createButtonPanel(buttonAjouterEquipe, buttonSupprimerEquipe,buttonModifierEquipe,buttonAfficherEquipe), gridBagConstraints);
 
-        gridBagConstraints.weighty = 0.5;
+        gridBagConstraints.weighty = 0.8;
         gridBagConstraints.gridy = 0;
         panelParticipant.add(new JScrollPane(listParticipant),gridBagConstraints);
 
+        gridBagConstraints.weighty = 0.2;
         gridBagConstraints.gridy = 1;
         panelParticipant.add(panelInformationParticpant,gridBagConstraints);
 
@@ -396,6 +364,11 @@ public class mainFrame extends JFrame
     public JPanel getPanelParticipant() {
         return panelParticipant;
     }
+
+    public JPanel getPanelInformationParticpant() {
+        return panelInformationParticpant;
+    }
+
     // ===========================================================
 
     public static void main(String[] argv){
