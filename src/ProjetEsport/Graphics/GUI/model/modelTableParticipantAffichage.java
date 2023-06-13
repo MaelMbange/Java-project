@@ -16,13 +16,10 @@ public class modelTableParticipantAffichage extends AbstractTableModel {
 
     public modelTableParticipantAffichage(Teams equipe){
         membres = new ArrayList<>();
-        if(!equipe.getAllMembers().isEmpty()){
-            membres.addAll(equipe.getAllMembers());
-            membres.sort(Members::compareTo);
-            System.out.println("model participant affichage" + equipe);
-        }
-        else
-            System.out.println("model participant Affichage condition non valide" + equipe);
+        membres.addAll(equipe.getTeamsPlayers());
+        if(equipe.getTeamCoach() != null)
+            membres.add(equipe.getTeamCoach());
+        membres.sort(Members::compareTo);
     }
 
     @Override

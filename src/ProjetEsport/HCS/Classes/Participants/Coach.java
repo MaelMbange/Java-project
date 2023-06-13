@@ -19,17 +19,12 @@ public class Coach extends Members implements Cloneable{
         return String.format("*\t%04d [%-10s] %-20s - %s\n",this.getID(), this.getPseudo(), this.getNationality(), this.getRegisterTime());
     }
     @Override
-    public Coach clone() {
-        try
-        {
-            return (Coach) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
+    public Object clone() {
+        return (Coach)super.clone();
     }
     public static void main(String argv[]){
         Coach c = new Coach("PTG","Be");
-        Coach cc = c.clone();
+        Coach cc = (Coach)c.clone();
 
         System.out.println(c);
         System.out.println(cc);

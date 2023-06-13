@@ -17,13 +17,12 @@ public class modelTableParticipant extends AbstractTableModel {
     public modelTableParticipant(List<Teams> equipes){
         participants = new ArrayList<>();
         for(Teams equipe : equipes){
-            if(!equipe.getAllMembers().isEmpty()){
-                participants.addAll(equipe.getAllMembers());
-                participants.sort(Members::compareTo);
-                System.out.println("model participant" +equipe);
-            }
-            else
-                System.out.println("model participant condition non valide" +equipe);
+
+            participants.addAll(equipe.getTeamsPlayers());
+            if(equipe.getTeamCoach() != null)
+                participants.add(equipe.getTeamCoach());
+            participants.sort(Members::compareTo);
+            //System.out.println("model participant" +equipe);
         }
     }
 

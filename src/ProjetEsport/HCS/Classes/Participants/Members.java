@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public abstract class Members implements Comparable<Members>{
+public abstract class Members implements Comparable<Members>, Cloneable{
     protected int ID;
     protected static int CurrentId = 1;
     protected LocalDate RegisterTime = LocalDate.now();
@@ -30,14 +30,18 @@ public abstract class Members implements Comparable<Members>{
     }
 
     // ================================== GETTERS ======================================
-    public String getRegisterTime(Locale selectedLocation) {
+    public String getRegisterTimeString(Locale selectedLocation) {
         DateTimeFormatter sdf =  DateTimeFormatter.ofPattern("d MMMM, yyyy");
         return sdf.format(RegisterTime);
     }
 
-    public String getRegisterTime() {
+    public String getRegisterTimeString() {
         DateTimeFormatter sdf =  DateTimeFormatter.ofPattern("d MMMM, yyyy");
         return sdf.format(RegisterTime);
+    }
+
+    public LocalDate getRegisterTime(){
+        return RegisterTime;
     }
 
     public int getID() {
@@ -80,6 +84,10 @@ public abstract class Members implements Comparable<Members>{
         System.out.println(RegisterTime);
     }
 
+    public void setRegisterTime(LocalDate registerTime) {
+        RegisterTime = registerTime;
+    }
+
     public void setEquipe(Teams equipe) {
         this.equipe = equipe;
     }
@@ -101,6 +109,15 @@ public abstract class Members implements Comparable<Members>{
     @Override
     public int hashCode() {
         return Objects.hash(ID, RegisterTime, Nationality, Pseudo);
+    }
+
+    @Override
+    public Object clone() {
+        try {
+            return (Members) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
     public static void main(String[] argv){

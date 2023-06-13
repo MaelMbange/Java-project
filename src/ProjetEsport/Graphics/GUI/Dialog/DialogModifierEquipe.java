@@ -5,6 +5,7 @@ import ProjetEsport.HCS.Classes.Participants.Players;
 import ProjetEsport.HCS.Classes.Participants.Teams;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.event.*;
 
 public class DialogModifierEquipe extends JDialog {
@@ -23,6 +24,7 @@ public class DialogModifierEquipe extends JDialog {
     private Teams EquipeEnCours;
     private Teams EquipeAttente;
 
+
     public DialogModifierEquipe() {
         setContentPane(contentPane);
         setModal(true);
@@ -30,7 +32,7 @@ public class DialogModifierEquipe extends JDialog {
 
         tableMembres.setCellEditor(null);
 
-        this.setSize(600,600);
+        this.setSize(700,600);
         this.setResizable(false);
         textFieldNomEquipe.setEditable(false);
 
@@ -65,7 +67,8 @@ public class DialogModifierEquipe extends JDialog {
 
             tableMembres.removeAll();
             tableMembres.setModel(new modelTableParticipantAffichage(EquipeAttente));
-            System.out.println("Equipe en attente "+EquipeAttente.getAllMembers());
+
+            //pack();
         });
 
         validerButton.addActionListener(e->{
@@ -74,17 +77,14 @@ public class DialogModifierEquipe extends JDialog {
                     //EquipeEnCours.setTeamName(textFieldNomEquipe.getText());
                     EquipeEnCours.setDescription(textAreaDescription.getText());
 
-                    if(!EquipeAttente.getAllMembers().isEmpty()){
-                        if(EquipeAttente.getTeamCoach() != null)
-                            EquipeEnCours.setTeamCoach(EquipeAttente.getTeamCoach());
-                        for(Players p : EquipeAttente.getTeamsPlayers()){
-                            if(!EquipeEnCours.getTeamsPlayers().contains(p)){
-                                EquipeEnCours.AjouterJoueur(p);
-                            }
+                    for(Players p : EquipeAttente.getTeamsPlayers()) {
+                        if (!EquipeEnCours.getTeamsPlayers().contains(p)) {
+                            EquipeEnCours.AjouterJoueur(p);
                         }
                     }
+                    if(EquipeAttente.getTeamCoach() != null)
+                        EquipeEnCours.setTeamCoach(EquipeAttente.getTeamCoach());
 
-                    System.out.println("Equipe en cours "+ EquipeEnCours.getAllMembers());
                     setVisible(false);
                     dispose();
                 }
@@ -106,11 +106,10 @@ public class DialogModifierEquipe extends JDialog {
 
         tableMembres.removeAll();
         this.tableMembres.setModel(new modelTableParticipantAffichage(this.EquipeAttente));
+
         this.textFieldNomEquipe.setText(EquipeAttente.getTeamName());
         this.textAreaDescription.setText(EquipeAttente.getDescription());
 
-        /*tableMembres.removeAll();
-        tableMembres.setModel(new modelTableParticipantAffichage(EquipeAttente));*/
         //pack();
     }
 

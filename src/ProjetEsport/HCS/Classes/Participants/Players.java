@@ -48,15 +48,6 @@ public class Players extends Members implements Comparator<Members> {
     public String toString() {
         return String.format("*\t%04d [%-10s] %-20s - %s [%s]\n",this.getID(), this.getPseudo(), this.getNationality(), this.getRegisterTime(), (this.getRole() == Status.STARTER)? "STARTER" : "SUBSTITUTE");
     }
-    @Override
-    public Players clone() {
-        try
-        {
-            return (Players) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
-    }
 
     @Override
     public int compare(Members o1, Members o2) {
@@ -82,11 +73,19 @@ public class Players extends Members implements Comparator<Members> {
         SUBSTITUTE
     }
 
+    @Override
+    public Object clone() {
+        Players clone = (Players) super.clone();
+        clone.setRole(this.Role);
+
+        return (Players)clone;
+    }
+
 
     public static void main(String argv[]){
         Players p = new Players("PTG",true,"Be");
 
-        Players q = p.clone();
+        Players q = (Players) p.clone();
 
         System.out.println(p);
         System.out.println(q);

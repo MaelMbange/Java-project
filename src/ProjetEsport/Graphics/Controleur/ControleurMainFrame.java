@@ -195,11 +195,12 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
                 dme.setVisible(true);
                 dme.dispose();
 
-                System.out.println("tournoi equipes : " + tournoi.getTableEquipe().values());
+                //System.out.println("tournoi equipes : " + tournoi.getTableEquipe().values());
 
                 Fenetre.getListEquipe().removeAll();
                 Fenetre.setListEquipe(new ArrayList<>(tournoi.getTableEquipe().values()));
 
+                // -----------------------------------------------------------------------------//
                 Fenetre.getListParticipant().removeAll();
                 Fenetre.setListParticipant(new ArrayList<>(tournoi.getTableEquipe().values()));
             }

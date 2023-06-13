@@ -1,5 +1,6 @@
 package ProjetEsport.HCS.Classes.Participants;
 
+import java.time.LocalDate;
 import java.util.*;
 import ProjetEsport.HCS.Classes.Interfaces.getInstanceAt;
 import org.jetbrains.annotations.NotNull;
@@ -10,6 +11,8 @@ public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Team
     private String TeamName;
     private String Description;
 
+    private String Image;
+
     public Teams(){
     }
 
@@ -19,6 +22,7 @@ public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Team
         TeamsPlayers = new ArrayList<Players>(5);
         TeamCoach = null;
         Description = "You can add a description!";
+        Image = "src/ProjetEsport/Graphics/Images/logo.png";
     }
 
     public Teams(String Name, String description){
@@ -28,6 +32,7 @@ public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Team
         if(description == null) Description = "";
         else if(description.length() <= 200)
             Description = description;
+        Image = "src/ProjetEsport/Graphics/Images/logo.png";
     }
 
     // Ajouter un joueur
@@ -99,6 +104,15 @@ public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Team
         listMembres.add(TeamCoach);
         return listMembres;
     }
+
+    public void setImage(String image) {
+        Image = image;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
     @Override
     public String toString() {
         String s = "\n=== Equipe ===\n[" + TeamName + "]\ndescription: \"" + Description + "\"\n\n";
@@ -144,7 +158,20 @@ public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Team
     public Teams clone() {
         try
         {
-            return (Teams) super.clone();
+            Teams cloned = (Teams)super.clone();
+            cloned.TeamsPlayers = new ArrayList<>();
+            for (Players player : TeamsPlayers) {
+                cloned.TeamsPlayers.add((Players) player.clone());  // Copie de chaque objet Players dans TeamsPlayers
+            }
+            if(this.TeamCoach != null)
+                cloned.TeamCoach = (Coach)TeamCoach.clone();  // Copie de l'objet Coach
+
+            // Vous pouvez également copier les attributs immuables directement
+            cloned.TeamName = this.TeamName;
+            cloned.Description = this.Description;
+
+            return cloned;
+
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
