@@ -38,7 +38,7 @@ public class DIalogNouveauMembre extends JDialog {
         comboPays.addItem("United States");
         comboPays.addItem("Japan");
         comboPays.addItem("Dutchland");
-        comboPays.addItem("Germania");
+        comboPays.addItem("Germany");
         comboPays.addItem("England");
 
         group = new ButtonGroup();

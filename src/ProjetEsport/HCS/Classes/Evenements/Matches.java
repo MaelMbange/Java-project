@@ -2,9 +2,10 @@ package ProjetEsport.HCS.Classes.Evenements;
 
 import ProjetEsport.HCS.Classes.Participants.*;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Matches {
+public class Matches implements Serializable {
     private Teams A;
     private Teams B;
 

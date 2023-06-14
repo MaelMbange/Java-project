@@ -1,6 +1,8 @@
 package ProjetEsport.HCS.Classes.Participants;
 
-public class Coach extends Members implements Cloneable{
+import java.io.Serializable;
+
+public class Coach extends Members implements Cloneable, Serializable {
 
     public Coach(){}
     public Coach(String pseudo, String Location){

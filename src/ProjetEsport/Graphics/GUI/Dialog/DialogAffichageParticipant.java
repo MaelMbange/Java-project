@@ -8,6 +8,7 @@ import ProjetEsport.HCS.Classes.Participants.Members;
 import ProjetEsport.HCS.Classes.Participants.Players;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 public class DialogAffichageParticipant extends JDialog {
@@ -90,6 +91,10 @@ public class DialogAffichageParticipant extends JDialog {
 
         labelNomEquipe.setText(members.getEquipe().getTeamName());
         table1.setModel(new modelTableParticipantAffichage(members.getEquipe()));
+
+        Image image = new ImageIcon(members.getEquipe().getImage()).getImage();
+        Image resisedImage = image.getScaledInstance(100,100,Image.SCALE_SMOOTH);
+        labelNomEquipe.setIcon(new ImageIcon(resisedImage));
 
     }
 

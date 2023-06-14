@@ -19,6 +19,8 @@ public class DialogAjouterEquipe extends JDialog {
 
     private String[] equipeExistante;
 
+    private boolean ok = false;
+
     public DialogAjouterEquipe() {
         setContentPane(contentPane);
         setModal(true);
@@ -58,7 +60,7 @@ public class DialogAjouterEquipe extends JDialog {
 
     private void onOK() {
         // add your code here
-        if(textFieldNomEquipe.getText().isEmpty()){
+        if(textFieldNomEquipe.getText().isEmpty() || textFieldNomEquipe.getText().isBlank()){
             JOptionPane.showMessageDialog(this,"Necessite d'un nom d'equipe!","Equipe",JOptionPane.INFORMATION_MESSAGE);
             return;
         }
@@ -72,7 +74,7 @@ public class DialogAjouterEquipe extends JDialog {
                 return;
             }
         }
-
+        ok = true;
         //Teams equipe = new Teams(textFieldNomEquipe.getText(),textAreaDescription.getText());
         setVisible(false);
 
@@ -82,7 +84,9 @@ public class DialogAjouterEquipe extends JDialog {
 
     private void onCancel() {
         // add your code here if necessary
-        dispose();
+        //dispose();
+        ok = false;
+        setVisible(false);
     }
 
     public void setInformation(String[] equipeExistante){
@@ -92,6 +96,10 @@ public class DialogAjouterEquipe extends JDialog {
             this.equipeExistante = new String[]{};
 
         //System.out.println("DAE" + Arrays.toString(equipeExistante));
+    }
+
+    public boolean isOk() {
+        return ok;
     }
 
     public String getNomEquipe(){

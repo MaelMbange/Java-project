@@ -3,6 +3,7 @@ package ProjetEsport.Graphics.Controleur;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
@@ -11,8 +12,8 @@ import ProjetEsport.Graphics.GUI.Dialog.*;
 import ProjetEsport.Graphics.GUI.model.*;
 import ProjetEsport.HCS.Classes.Evenements.Matches;
 import ProjetEsport.HCS.Classes.Evenements.Tournoi;
+import ProjetEsport.HCS.Classes.GestionFichier.GestionnaireFichier;
 import ProjetEsport.HCS.Classes.Participants.Members;
-import ProjetEsport.HCS.Classes.Participants.Players;
 import ProjetEsport.HCS.Classes.Participants.Teams;
 
 public class ControleurMainFrame extends WindowAdapter implements ActionListener, MouseListener, ChangeListener
@@ -23,6 +24,17 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
     public ControleurMainFrame(mainFrame FENETRE,Tournoi TOURNOI){
         Fenetre = FENETRE;
         tournoi = TOURNOI;
+    }
+
+    public void resetAffichage(){
+        Fenetre.getListEquipe().removeAll();
+        Fenetre.setListEquipe(new ArrayList<>(tournoi.getTableEquipe().values()));
+
+        Fenetre.getListMatch().removeAll();
+        Fenetre.setListMatch(new ArrayList<>(tournoi.getTableMatch().values()));
+
+        Fenetre.getListParticipant().removeAll();
+        Fenetre.setListParticipant(new ArrayList<>(tournoi.getTableEquipe().values()));
     }
 
     @Override
@@ -47,29 +59,57 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if(e.getSource() == Fenetre.getMenuItemOuvrir()){
-            JDialog j = new JDialog(Fenetre,"Ouvrir",true);
-            j.setLocation(200,200);
-            j.setSize(200,200);
-            j.setVisible(true);
-            j.dispose();
+        if(e.getSource() == Fenetre.getMenuItemNouveau()){
+            String nomFichier = "";
+            while(nomFichier.isBlank()) {
+                nomFichier = JOptionPane.showInputDialog("Entrez le nom du fichier :");
+            }
+            System.out.println("Nouveau fichier :" + nomFichier);
+            tournoi.setFileName("src/Data/" + nomFichier + ".data");
+
+            GestionnaireFichier.CreationFichier(tournoi.getFileName());
+
+            tournoi.resetTournoi();
+            resetAffichage();
+            Fenetre.EnablePanels(true);
+
+        }else if(e.getSource() == Fenetre.getMenuItemOuvrir()){
+            JFileChooser selecteurFichier = new JFileChooser("src/Data/");
+            int valeur = selecteurFichier.showOpenDialog(Fenetre);
+
+            if(valeur == JFileChooser.APPROVE_OPTION){
+
+                String fileName = selecteurFichier.getSelectedFile().getPath();
+                System.out.println("Ouverture de : " + fileName);
+
+                tournoi = GestionnaireFichier.ouvrirFichier(fileName);
+                Fenetre.EnablePanels(true);
+                resetAffichage();
+            }
+
         }else if(e.getSource() == Fenetre.getMenuItemEnregistrer()){
-            JDialog j = new JDialog(Fenetre,"Enregistrer",true);
-            j.setLocation(200,200);
-            j.setSize(200,200);
-            j.setVisible(true);
-            j.dispose();
-        }else if(e.getSource() == Fenetre.getMenuItemQuitter()){
+            GestionnaireFichier.sauvegarderFichier(tournoi);
+
+        }else if(e.getSource() == Fenetre.getMenuItemQuitter()) {
+            GestionnaireFichier.sauvegarderFichier(tournoi);
             Fenetre.setVisible(false);
             Fenetre.dispose();
 
+        }else if(e.getSource() == Fenetre.getClaire()){
+            Fenetre.sauvegardeProperties(Color.WHITE);
+            Fenetre.setBackgroundUI(Color.WHITE);
+        }else if(e.getSource() == Fenetre.getSombre()){
+            Fenetre.sauvegardeProperties(Color.GRAY);
+            Fenetre.setBackgroundUI(Color.GRAY);
         }else if(e.getSource() == Fenetre.getButtonAjouterEquipe() ||e.getSource() == Fenetre.getMenuItemAjouterEquipe()){
+
             DialogAjouterEquipe dae = new DialogAjouterEquipe();
             dae.setInformation(tournoi.getTableEquipe().keySet().toArray(new String[0]));
 
             dae.setVisible(true);
             //tournoi.AjouterUneEquipe(dae.getEquipe());
-            tournoi.AjouterUneEquipe(new Teams(dae.getNomEquipe(),dae.getDescriptionEquipe()));
+            if(dae.isOk())
+                tournoi.AjouterUneEquipe(new Teams(dae.getNomEquipe(),dae.getDescriptionEquipe()));
             dae.dispose();
 
             Fenetre.getListEquipe().removeAll();
@@ -223,6 +263,8 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
 
     @Override
     public void windowClosing(WindowEvent e) {
+        //GestionnaireFichier.sauvegarderFichier(Fenetre.getCurrentFileName(),tournoi);
+        GestionnaireFichier.sauvegarderFichier(tournoi);
         System.exit(0);
     }
 
@@ -291,9 +333,9 @@ public class ControleurMainFrame extends WindowAdapter implements ActionListener
 
     public static void main(String[] argv){
         Tournoi tournoi = Tournoi.getInstance();
-        tournoi.AjouterUneEquipe("Requiem","We are forerunners !");
-        tournoi.AjouterUneEquipe("Meridian", "We are Humans !");
-        tournoi.AjouterUneEquipe("Great sharity", "We are Covenants !");
+        //tournoi.AjouterUneEquipe("Requiem","We are forerunners !");
+        //tournoi.AjouterUneEquipe("Meridian", "We are Humans !");
+        //tournoi.AjouterUneEquipe("Great sharity", "We are Covenants !");
 
         System.out.println(tournoi.getTableEquipe().keySet());
 

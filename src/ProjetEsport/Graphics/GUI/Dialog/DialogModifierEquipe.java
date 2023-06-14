@@ -5,7 +5,6 @@ import ProjetEsport.HCS.Classes.Participants.Players;
 import ProjetEsport.HCS.Classes.Participants.Teams;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -22,6 +21,7 @@ public class DialogModifierEquipe extends JDialog {
 
     private JButton ajouterUnMembreButton;
     private JLabel ImageEquipe;
+    private JButton changerImageButton;
 
     private Teams EquipeEnCours;
     private Teams EquipeAttente;
@@ -74,7 +74,7 @@ public class DialogModifierEquipe extends JDialog {
         });
 
         validerButton.addActionListener(e->{
-            if(textFieldNomEquipe.getText() != null ){
+            if(textFieldNomEquipe.getText() != null || textFieldNomEquipe.getText().isBlank()){
                 try{
                     //EquipeEnCours.setTeamName(textFieldNomEquipe.getText());
                     EquipeEnCours.setDescription(textAreaDescription.getText());
@@ -87,6 +87,8 @@ public class DialogModifierEquipe extends JDialog {
                     if(EquipeAttente.getTeamCoach() != null)
                         EquipeEnCours.setTeamCoach(EquipeAttente.getTeamCoach());
 
+                    EquipeEnCours.setImage(EquipeAttente.getImage());
+
                     setVisible(false);
                     dispose();
                 }
@@ -94,6 +96,22 @@ public class DialogModifierEquipe extends JDialog {
                     JOptionPane.showMessageDialog(this,a.getMessage(),"Equipe",JOptionPane.INFORMATION_MESSAGE);
                 }
             }
+        });
+
+        changerImageButton.addActionListener(e->{
+            JFileChooser selecteurFichier = new JFileChooser("src/ProjetEsport/Graphics/Images");
+            int valeur = selecteurFichier.showOpenDialog(this);
+            if(valeur == JFileChooser.APPROVE_OPTION){
+                EquipeAttente.setImage(selecteurFichier.getSelectedFile().getAbsolutePath());
+            }
+            else{
+                EquipeAttente.setImage("src/ProjetEsport/Graphics/Images/logo.png");
+            }
+
+            Image image = new ImageIcon(this.EquipeAttente.getImage()).getImage();
+            Image resisedImage = image.getScaledInstance(100,100,Image.SCALE_SMOOTH);
+
+            this.ImageEquipe.setIcon(new ImageIcon(resisedImage));
         });
     }
 
@@ -112,7 +130,7 @@ public class DialogModifierEquipe extends JDialog {
         this.textFieldNomEquipe.setText(EquipeAttente.getTeamName());
         this.textAreaDescription.setText(EquipeAttente.getDescription());
 
-        Image image = new ImageIcon(this.EquipeEnCours.getImage()).getImage();
+        Image image = new ImageIcon(this.EquipeAttente.getImage()).getImage();
         Image resisedImage = image.getScaledInstance(100,100,Image.SCALE_SMOOTH);
 
         this.ImageEquipe.setIcon(new ImageIcon(resisedImage));

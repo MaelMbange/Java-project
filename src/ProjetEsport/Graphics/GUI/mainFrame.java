@@ -1,18 +1,15 @@
 package ProjetEsport.Graphics.GUI;
 
 import javax.swing.*;
-import javax.swing.border.BevelBorder;
-import javax.swing.table.TableCellEditor;
 import java.awt.*;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.List;
+import java.util.Properties;
 
 import ProjetEsport.Graphics.Controleur.*;
 import ProjetEsport.Graphics.GUI.model.*;
 import ProjetEsport.HCS.Classes.Evenements.Matches;
-import ProjetEsport.HCS.Classes.Participants.Coach;
-import ProjetEsport.HCS.Classes.Participants.Members;
-import ProjetEsport.HCS.Classes.Participants.Players;
+import ProjetEsport.HCS.Classes.GestionFichier.GestionnaireFichier;
 import ProjetEsport.HCS.Classes.Participants.Teams;
 
 public class mainFrame extends JFrame
@@ -22,7 +19,6 @@ public class mainFrame extends JFrame
     private JPanel panelMatch;
     private JPanel panelEquipe;
     private JPanel panelParticipant;
-    private JPanel panelInformationParticpant;
     
     private JButton buttonAjouterMatch;
     private JButton buttonAjouterEquipe;
@@ -57,10 +53,114 @@ public class mainFrame extends JFrame
             private JMenuItem menuItemQuitter;
             private JMenuItem menuItemEnregistrer;
             private JMenuItem menuItemOuvrir;
+            private JMenuItem menuItemNouveau;
+        private JMenu MenuCouleur;
+            private JMenuItem Claire;
+            private JMenuItem Sombre;
+
+
+    private String[] options = {"Ouvrir un fichier","Creer un nouveau fichier"};
+    private String filePath = "src/Data/color.properties";
 
     public mainFrame(){
         super("Esport manager");
         initComponents();
+        chargementProperties();
+    }
+
+    public void setBackgroundUI(Color color){
+        Color font;
+        if(color == Color.WHITE){
+            font = Color.BLACK;
+        }
+        else font = Color.WHITE;
+
+        setBackground(color);
+
+        panelMatch.setBackground(color);
+        panelEquipe.setBackground(color);
+        panelParticipant.setBackground(color);
+
+        listMatch.setBackground(color);
+        listEquipe.setBackground(color);
+        listParticipant.setBackground(color);
+
+        menuBar.setBackground(color);
+
+        listMatch.setForeground(font);
+        listEquipe.setForeground(font);
+        listParticipant.setForeground(font);
+    }
+
+    public void chargementProperties(){
+        Properties prop = new Properties();
+        File file = new File(filePath);
+        if(file.exists()){
+            System.out.println("\033[92mChargement du fichier properties!\033[0m");
+            try(InputStream in = new FileInputStream(file))
+            {
+                prop.load(in);
+                    String value = prop.getProperty("Couleur");
+                if(value.equalsIgnoreCase("claire")){
+                    //this.setBackground(Color.WHITE);
+                    setBackgroundUI(Color.WHITE);
+                }
+                else {
+                    //this.setBackground(Color.GRAY);
+                    setBackgroundUI(Color.GRAY);
+                }
+                System.out.println("Valeur properties Couleur = "+ value);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            setBackgroundUI(Color.WHITE);
+            try{
+                System.out.println(Color.RED + "Creation du fichier properties!" + Color.BLACK);
+                file.createNewFile();
+                prop.setProperty("Couleur","claire");
+
+                OutputStream out = new FileOutputStream(file);
+                    prop.store(out,null);
+                out.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void sauvegardeProperties(Color color){
+        String value;
+        if(color == Color.WHITE){
+            value = "claire";
+        }
+        else{
+            value = "sombre";
+        }
+
+        Properties prop = new Properties();
+        try {
+            // Chargement du fichier de propriétés existant
+            Properties properties = new Properties();
+            InputStream input = new FileInputStream(filePath);
+            properties.load(input);
+            input.close();
+
+            // Modification de la valeur "sombre" en "claire"
+            properties.setProperty("Couleur", value);
+
+            // Enregistrement des modifications dans le fichier
+            OutputStream output = new FileOutputStream(filePath);
+            properties.store(output, null);
+            output.close();
+
+            System.out.println("La valeur a été modifiée avec succès.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setControler(ControleurMainFrame CM){
@@ -85,6 +185,10 @@ public class mainFrame extends JFrame
         menuItemQuitter.addActionListener(CM);
         menuItemEnregistrer.addActionListener(CM);
         menuItemOuvrir.addActionListener(CM);
+        menuItemNouveau.addActionListener(CM);
+
+        Claire.addActionListener(CM);
+        Sombre.addActionListener(CM);
 
         listMatch.addMouseListener(CM);
         listEquipe.addMouseListener(CM);
@@ -115,60 +219,6 @@ public class mainFrame extends JFrame
 
         buttonInfoSupplementaire = new JButton("Afficher plus d'information");
         buttonInfoSupplementaire.setBorder(BorderFactory.createCompoundBorder());
-
-        /*listMatch = new JList<>();
-        listEquipe = new JList<>();
-        listParticipant = new JList<>();*/
-
-        //========== Data test ===================
-
-        /*Players[] plist = {
-                new Players("PTG_1",true, "Be"),
-                new Players("PGT_2",true, "Be"),
-                new Players("PGT_3",true, "Be"),
-                new Players("PGT_4",true, "Be"),
-                new Players("PGT_5",true, "Be"),
-        };
-        Players[] plist2 = {
-                new Players("FUN_1",true, "Fr"),
-                new Players("FUN_2",true, "Fr"),
-                new Players("FUN_3",true, "Fr"),
-                new Players("FUN_4",true, "Fr"),
-                new Players("FUN_5",false, "Fr")
-        };
-        Teams t = new Teams("Quadrant");
-        Teams t2 = new Teams("Sentinels");
-        Coach[] c = {
-                new Coach(),
-                new Coach()
-        };
-        c[0].setPseudo("Wagner");
-        c[1].setPseudo("Wilvers");   try{
-            System.out.println("[" + t.getTeamName() +"]");
-            for (Players x: plist) {
-                t.AjouterJoueur(x);
-            }
-            t.setTeamCoach(c[0]);
-
-            System.out.println("\n[" + t2.getTeamName() +"]");
-            for (Players x: plist2) {
-                t2.AjouterJoueur(x);
-            }
-            t2.setTeamCoach(c[1]);
-        }
-        catch(Exception e){
-            System.out.println(e.getMessage());
-        }
-
-        List<Matches> lm = new ArrayList<>();
-        lm.add(new Matches(t,t2));
-        lm.add(new Matches(t2,t));
-
-        List<Teams> le = new ArrayList<>();
-        le.add(t);
-        le.add(t2);*/
-
-        // =======================================
 
         listMatch = new JTable();
         //listMatch = new JTable(new modelTableMatch(lm));
@@ -227,9 +277,13 @@ public class mainFrame extends JFrame
                 menuItemAjouterMatch = new JMenuItem("Ajouter");
                 menuItemSupprimerMatch = new JMenuItem("Supprimer");
             MenuSystem = new JMenu("File");
+                menuItemNouveau = new JMenuItem("Nouveau");
                 menuItemOuvrir = new JMenuItem("Ouvrir");
                 menuItemEnregistrer = new JMenuItem("Enregistrer");
                 menuItemQuitter = new JMenuItem("Quitter");
+            MenuCouleur = new JMenu("Couleur");
+                Claire = new JMenuItem("Claire");
+                Sombre = new JMenuItem("Sombre");
 
         MenuEquipe.add(menuItemAjouterEquipe);
         MenuEquipe.add(menuItemSupprimerEquipe);
@@ -237,22 +291,51 @@ public class mainFrame extends JFrame
         MenuMatch.add(menuItemAjouterMatch);
         MenuMatch.add(menuItemSupprimerMatch);
 
+        MenuSystem.add(menuItemNouveau);
         MenuSystem.add(menuItemOuvrir);
         MenuSystem.add(menuItemEnregistrer);
         MenuSystem.add(menuItemQuitter);
 
+        MenuCouleur.add(Claire);
+        MenuCouleur.add(Sombre);
+
         menuBar.add(MenuSystem);
         menuBar.add(MenuMatch);
         menuBar.add(MenuEquipe);
+        menuBar.add(MenuCouleur);
         
         setJMenuBar(menuBar);
 
         setContentPane(panneau);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setMinimumSize(new Dimension(1500,1000));
+
+        EnablePanels(false);
         //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //setVisible(true);
         //pack();
+    }
+
+    public void EnablePanels(boolean actif){
+        MenuEquipe.setEnabled(actif);
+        MenuMatch.setEnabled(actif);
+        menuItemEnregistrer.setEnabled(actif);
+
+        panelEquipe.setEnabled(actif);
+        panelParticipant.setEnabled(actif);
+        panelMatch.setEnabled(actif);
+
+        buttonAfficherMatch.setEnabled(actif);
+        buttonAjouterMatch.setEnabled(actif);
+        buttonModifierMatch.setEnabled(actif);
+        buttonSupprimerMatch.setEnabled(actif);
+
+        buttonAfficherEquipe.setEnabled(actif);
+        buttonModifierEquipe.setEnabled(actif);
+        buttonAjouterEquipe.setEnabled(actif);
+        buttonSupprimerEquipe.setEnabled(actif);
+
+        buttonInfoSupplementaire.setEnabled(actif);
     }
 
     private JPanel createButtonPanel(JButton button1, JButton button2,JButton button3,JButton button4) {
@@ -320,6 +403,17 @@ public class mainFrame extends JFrame
     public final JMenuItem getMenuItemOuvrir() {
         return menuItemOuvrir;
     }
+    public JMenuItem getMenuItemNouveau() {
+        return menuItemNouveau;
+    }
+
+    public JMenuItem getClaire() {
+        return Claire;
+    }
+
+    public JMenuItem getSombre() {
+        return Sombre;
+    }
 
     // =================== Partie Tableau ========================
     public JTable getListMatch() {
@@ -365,11 +459,8 @@ public class mainFrame extends JFrame
         return panelParticipant;
     }
 
-    public JPanel getPanelInformationParticpant() {
-        return panelInformationParticpant;
-    }
-
     // ===========================================================
+
 
     public static void main(String[] argv){
         mainFrame mf = new mainFrame();

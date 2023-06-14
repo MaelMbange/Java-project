@@ -1,8 +1,9 @@
 package ProjetEsport.HCS.Classes.Participants;
+import java.io.Serializable;
 import java.util.*;
 
 
-public class Players extends Members implements Comparator<Members> {
+public class Players extends Members implements Comparator<Members>, Serializable {
     private Status Role;
 
     public Players(){

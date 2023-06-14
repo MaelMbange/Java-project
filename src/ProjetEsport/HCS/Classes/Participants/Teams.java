@@ -1,11 +1,12 @@
 package ProjetEsport.HCS.Classes.Participants;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 import ProjetEsport.HCS.Classes.Interfaces.getInstanceAt;
 import org.jetbrains.annotations.NotNull;
 
-public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Teams>{
+public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Teams>, Serializable {
     private ArrayList<Players> TeamsPlayers;
     private Coach TeamCoach;
     private String TeamName;
@@ -169,6 +170,7 @@ public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Team
             // Vous pouvez également copier les attributs immuables directement
             cloned.TeamName = this.TeamName;
             cloned.Description = this.Description;
+            cloned.setImage(this.getImage());
 
             return cloned;
 

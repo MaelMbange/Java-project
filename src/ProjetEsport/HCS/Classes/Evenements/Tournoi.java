@@ -1,31 +1,23 @@
 package ProjetEsport.HCS.Classes.Evenements;
 import ProjetEsport.HCS.Classes.Participants.*;
 
+import java.io.Serializable;
 import java.util.Hashtable;
 
-public class Tournoi {
+public class Tournoi implements Serializable {
     private Hashtable<String,Matches> tableMatch;
     private Hashtable<String, Teams> tableEquipe;
-    private String NomTournoi;
+    private String fileName = "";
 
     private static Tournoi instance = null;
 
     private Tournoi(){
         tableEquipe = new Hashtable<>();
         tableMatch = new Hashtable<>();
-        NomTournoi = "";
     }
     public static Tournoi getInstance(){
         if(instance != null) return instance;
         return new Tournoi();
-    }
-
-    public void setNomTournois(String nomTournoi){
-        NomTournoi = nomTournoi;
-    }
-
-    public String getNomTournois(){
-        return NomTournoi;
     }
 
     //============= Partie Matche =============
@@ -90,8 +82,22 @@ public class Tournoi {
         }   
     }
 
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
     public Hashtable<String,Teams> getTableEquipe(){
         return tableEquipe;
     }
+
+    public void resetTournoi(){
+        tableMatch = new Hashtable<>();
+        tableEquipe = new Hashtable<>();
+    }
+
     //=========================================
 }

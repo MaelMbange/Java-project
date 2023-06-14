@@ -2,11 +2,12 @@ package ProjetEsport.HCS.Classes.Participants;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public abstract class Members implements Comparable<Members>, Cloneable{
+public abstract class Members implements Comparable<Members>, Cloneable, Serializable {
     protected int ID;
     protected static int CurrentId = 1;
     protected LocalDate RegisterTime = LocalDate.now();
