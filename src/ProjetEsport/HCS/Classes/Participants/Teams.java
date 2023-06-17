@@ -36,6 +36,10 @@ public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Team
         Image = "src/ProjetEsport/Graphics/Images/logo.png";
     }
 
+    public void resetJoueurs(){
+        TeamsPlayers = new ArrayList<>(5);
+    }
+
     // Ajouter un joueur
     public void AjouterJoueur(Players player) throws Exception {
         if(TeamsPlayers.size() < 5)
@@ -44,7 +48,7 @@ public class Teams implements getInstanceAt<Members>, Cloneable, Comparable<Team
                 player.setEquipe(this);
                 System.out.printf("[%s] Joueur ajoute !\n",this.TeamName);
             }
-            else throw new Exception("The player your trying to add is already in the team!");
+            else throw new Exception("The player you're trying to add is already in the team!");
         else throw new Exception("Max amount of players has already been reached!");
     }
 

@@ -24,6 +24,15 @@ public class Coach extends Members implements Cloneable, Serializable {
     public Object clone() {
         return (Coach)super.clone();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+
+        return getPseudo().equalsIgnoreCase(((Coach) o).Pseudo);
+    }
+
     public static void main(String argv[]){
         Coach c = new Coach("PTG","Be");
         Coach cc = (Coach)c.clone();

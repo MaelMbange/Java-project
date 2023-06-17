@@ -57,11 +57,10 @@ public class Players extends Members implements Comparator<Members>, Serializabl
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        Players players = (Players) o;
-        return Role == players.Role;
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+
+        return getPseudo().equalsIgnoreCase(((Players) o).getPseudo());
     }
 
     @Override

@@ -41,6 +41,11 @@ public abstract class Members implements Comparable<Members>, Cloneable, Seriali
         return sdf.format(RegisterTime);
     }
 
+    public String getRegisterNormalFormat(){
+        DateTimeFormatter sdf =  DateTimeFormatter.ofPattern("dd,MM,yy");
+        return sdf.format(RegisterTime);
+    }
+
     public LocalDate getRegisterTime(){
         return RegisterTime;
     }
@@ -72,10 +77,12 @@ public abstract class Members implements Comparable<Members>, Cloneable, Seriali
     public void setNationality(String CountryCode) {
         Nationality = new Locale("en",CountryCode);
     }
-    protected void setId(int id){
+    public void setId(int id){
         this.ID = id;
     }
-
+    public void setCurrentId(int CURRENTID){
+        CurrentId = CURRENTID;
+    }
     public void setPseudo(String pseudo) {
         Pseudo = pseudo;
     }

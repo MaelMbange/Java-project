@@ -13,7 +13,7 @@ import java.util.List;
 public class modelTableParticipantAffichage extends AbstractTableModel {
 
     private List<Members> membres;
-    private final String[] nomColonnes = {"Id","Pseudo","Date enregistrement","Nationnalite","Type"};
+    private final String[] nomColonnes = {"Pseudo","Date enregistrement","Nationnalite","Type"};
 
     public modelTableParticipantAffichage(Teams equipe){
         membres = new ArrayList<>();
@@ -39,14 +39,12 @@ public class modelTableParticipantAffichage extends AbstractTableModel {
 
         switch(columnIndex){
             case 0:
-                return membre.getID();
-            case 1:
                 return membre.getPseudo();
-            case 2:
+            case 1:
                 return membre.getRegisterTime();
-            case 3:
+            case 2:
                 return membre.getNationality();
-            case 4:
+            case 3:
                 if(membre instanceof Coach)
                     return "Coach";
                 if(membre instanceof Players)

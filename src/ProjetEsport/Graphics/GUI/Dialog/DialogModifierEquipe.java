@@ -1,6 +1,8 @@
 package ProjetEsport.Graphics.GUI.Dialog;
 
 import ProjetEsport.Graphics.GUI.model.modelTableParticipantAffichage;
+import ProjetEsport.HCS.Classes.GestionFichier.GestionnaireFichier;
+import ProjetEsport.HCS.Classes.Participants.Members;
 import ProjetEsport.HCS.Classes.Participants.Players;
 import ProjetEsport.HCS.Classes.Participants.Teams;
 
@@ -22,6 +24,8 @@ public class DialogModifierEquipe extends JDialog {
     private JButton ajouterUnMembreButton;
     private JLabel ImageEquipe;
     private JButton changerImageButton;
+    private JButton importerButton;
+    private JButton exporterButton;
 
     private Teams EquipeEnCours;
     private Teams EquipeAttente;
@@ -113,6 +117,22 @@ public class DialogModifierEquipe extends JDialog {
 
             this.ImageEquipe.setIcon(new ImageIcon(resisedImage));
         });
+
+        importerButton.addActionListener(e->{
+
+            GestionnaireFichier.importerMembres(EquipeAttente);
+
+            tableMembres.removeAll();
+            tableMembres.setModel(new modelTableParticipantAffichage(EquipeAttente));
+
+        });
+
+        exporterButton.addActionListener(e->{
+
+            GestionnaireFichier.exporterMembres(EquipeAttente);
+
+        });
+
     }
 
     private void onCancel() {

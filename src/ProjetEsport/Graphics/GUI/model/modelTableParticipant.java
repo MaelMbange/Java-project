@@ -12,7 +12,7 @@ import java.util.List;
 public class modelTableParticipant extends AbstractTableModel {
 
     private List<Members> participants;
-    private final String[] nomColonnes = {"Id","Pseudo","Date enregistrement","Nationnalite","Type","Nom equipe"};
+    private final String[] nomColonnes = {"Pseudo","Date enregistrement","Nationnalite","Type","Nom equipe"};
 
     public modelTableParticipant(List<Teams> equipes){
         participants = new ArrayList<>();
@@ -42,19 +42,17 @@ public class modelTableParticipant extends AbstractTableModel {
 
         switch(columnIndex){
             case 0:
-                return membre.getID();
-            case 1:
                 return membre.getPseudo();
-            case 2:
+            case 1:
                 return membre.getRegisterTime();
-            case 3:
+            case 2:
                 return membre.getNationality();
-            case 4:
+            case 3:
                 if(membre instanceof Coach)
                     return "Coach";
                 if(membre instanceof Players)
                     return "Joueur [" + ((Players) membre).getRole().name() + "]";
-            case 5:
+            case 4:
                 return membre.getEquipe().getTeamName();
             default:
                 return "";
